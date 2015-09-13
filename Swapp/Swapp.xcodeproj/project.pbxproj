@@ -43,6 +43,9 @@
 		29C629481BA5840E003D399D /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6292A1BA5840E003D399D /* UIRefreshControl+AFNetworking.m */; };
 		29C629491BA5840E003D399D /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6292C1BA5840E003D399D /* UIWebView+AFNetworking.m */; };
 		29C6294A1BA5840E003D399D /* XHRealTimeBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6292F1BA5840E003D399D /* XHRealTimeBlur.m */; };
+		29C6294D1BA58689003D399D /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6294B1BA58689003D399D /* blue.png */; };
+		29C6294E1BA58689003D399D /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6294C1BA58689003D399D /* red.png */; };
+		29C629531BA58753003D399D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629521BA58753003D399D /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +136,10 @@
 		29C6292C1BA5840E003D399D /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		29C6292E1BA5840E003D399D /* XHRealTimeBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHRealTimeBlur.h; sourceTree = "<group>"; };
 		29C6292F1BA5840E003D399D /* XHRealTimeBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHRealTimeBlur.m; sourceTree = "<group>"; };
+		29C6294B1BA58689003D399D /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue.png; sourceTree = "<group>"; };
+		29C6294C1BA58689003D399D /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
+		29C629511BA58753003D399D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Controllers/Login/LoginViewController.h; sourceTree = "<group>"; };
+		29C629521BA58753003D399D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Controllers/Login/LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +181,7 @@
 		29C628BB1BA58348003D399D /* Swapp */ = {
 			isa = PBXGroup;
 			children = (
+				29C6294F1BA58729003D399D /* Controllers */,
 				29C628E21BA583AB003D399D /* Libraries */,
 				29C628C01BA58348003D399D /* AppDelegate.h */,
 				29C628C11BA58348003D399D /* AppDelegate.m */,
@@ -190,6 +198,8 @@
 		29C628BC1BA58348003D399D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				29C6294B1BA58689003D399D /* blue.png */,
+				29C6294C1BA58689003D399D /* red.png */,
 				29C628BD1BA58348003D399D /* Info.plist */,
 				29C628BE1BA58348003D399D /* main.m */,
 			);
@@ -382,6 +392,23 @@
 			path = Libraries/XHRealTimeBlur;
 			sourceTree = "<group>";
 		};
+		29C6294F1BA58729003D399D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				29C629501BA58735003D399D /* Login */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		29C629501BA58735003D399D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				29C629511BA58753003D399D /* LoginViewController.h */,
+				29C629521BA58753003D399D /* LoginViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -465,6 +492,8 @@
 				29C628C81BA58348003D399D /* Main.storyboard in Resources */,
 				29C628CD1BA58348003D399D /* LaunchScreen.xib in Resources */,
 				29C628CA1BA58348003D399D /* Images.xcassets in Resources */,
+				29C6294E1BA58689003D399D /* red.png in Resources */,
+				29C6294D1BA58689003D399D /* blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +531,7 @@
 				29C629411BA5840E003D399D /* PICollectionPageView.m in Sources */,
 				29C628C21BA58348003D399D /* AppDelegate.m in Sources */,
 				29C6294A1BA5840E003D399D /* XHRealTimeBlur.m in Sources */,
+				29C629531BA58753003D399D /* LoginViewController.m in Sources */,
 				29C6293F1BA5840E003D399D /* MBProgressHUD.m in Sources */,
 				29C628BF1BA58348003D399D /* main.m in Sources */,
 				29C629461BA5840E003D399D /* UIImageView+AFNetworking.m in Sources */,
@@ -708,6 +738,7 @@
 				29C628DE1BA58348003D399D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		29C628DF1BA58348003D399D /* Build configuration list for PBXNativeTarget "SwappTests" */ = {
 			isa = XCConfigurationList;
@@ -716,6 +747,7 @@
 				29C628E11BA58348003D399D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
