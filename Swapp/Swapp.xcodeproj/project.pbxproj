@@ -54,6 +54,8 @@
 		29C629681BA58B2F003D399D /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629671BA58B2F003D399D /* DashboardViewController.m */; };
 		29C6296B1BA58C92003D399D /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 29C629691BA58C91003D399D /* background.jpg */; };
 		29C6296C1BA58C92003D399D /* fblogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6296A1BA58C91003D399D /* fblogin@2x.png */; };
+		29C629701BA593FD003D399D /* TagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6296F1BA593FD003D399D /* TagViewController.m */; };
+		29C629751BA59606003D399D /* BoardTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629741BA59606003D399D /* BoardTag.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +162,10 @@
 		29C629671BA58B2F003D399D /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashboardViewController.m; path = Controllers/Dashboard/DashboardViewController.m; sourceTree = "<group>"; };
 		29C629691BA58C91003D399D /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		29C6296A1BA58C91003D399D /* fblogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fblogin@2x.png"; sourceTree = "<group>"; };
+		29C6296E1BA593FD003D399D /* TagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TagViewController.h; path = Controllers/TagView/TagViewController.h; sourceTree = "<group>"; };
+		29C6296F1BA593FD003D399D /* TagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TagViewController.m; path = Controllers/TagView/TagViewController.m; sourceTree = "<group>"; };
+		29C629731BA59606003D399D /* BoardTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoardTag.h; path = Views/BoardTag/BoardTag.h; sourceTree = "<group>"; };
+		29C629741BA59606003D399D /* BoardTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BoardTag.m; path = Views/BoardTag/BoardTag.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +211,7 @@
 		29C628BB1BA58348003D399D /* Swapp */ = {
 			isa = PBXGroup;
 			children = (
+				29C629711BA595DE003D399D /* Views */,
 				29C629601BA5896A003D399D /* Models */,
 				29C6295C1BA588FF003D399D /* Settings */,
 				29C6294F1BA58729003D399D /* Controllers */,
@@ -423,6 +430,7 @@
 		29C6294F1BA58729003D399D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				29C6296D1BA593EB003D399D /* TagView */,
 				29C629651BA58B13003D399D /* Dashboard */,
 				29C629581BA5887D003D399D /* Base */,
 				29C629501BA58735003D399D /* Login */,
@@ -481,6 +489,32 @@
 				29C629671BA58B2F003D399D /* DashboardViewController.m */,
 			);
 			name = Dashboard;
+			sourceTree = "<group>";
+		};
+		29C6296D1BA593EB003D399D /* TagView */ = {
+			isa = PBXGroup;
+			children = (
+				29C6296E1BA593FD003D399D /* TagViewController.h */,
+				29C6296F1BA593FD003D399D /* TagViewController.m */,
+			);
+			name = TagView;
+			sourceTree = "<group>";
+		};
+		29C629711BA595DE003D399D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				29C629721BA595E7003D399D /* BoardTag */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		29C629721BA595E7003D399D /* BoardTag */ = {
+			isa = PBXGroup;
+			children = (
+				29C629731BA59606003D399D /* BoardTag.h */,
+				29C629741BA59606003D399D /* BoardTag.m */,
+			);
+			name = BoardTag;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -604,6 +638,7 @@
 				29C6293B1BA5840E003D399D /* UIView+NHExtension.m in Sources */,
 				29C628C51BA58348003D399D /* ViewController.m in Sources */,
 				29C6293C1BA5840E003D399D /* UIView+Ext.m in Sources */,
+				29C629701BA593FD003D399D /* TagViewController.m in Sources */,
 				29C629371BA5840E003D399D /* AFURLResponseSerialization.m in Sources */,
 				29C629411BA5840E003D399D /* PICollectionPageView.m in Sources */,
 				29C628C21BA58348003D399D /* AppDelegate.m in Sources */,
@@ -623,6 +658,7 @@
 				29C628E81BA583DD003D399D /* OnboardingContentViewController.m in Sources */,
 				29C629491BA5840E003D399D /* UIWebView+AFNetworking.m in Sources */,
 				29C6293A1BA5840E003D399D /* UILabel+Boldify.m in Sources */,
+				29C629751BA59606003D399D /* BoardTag.m in Sources */,
 				29C629321BA5840E003D399D /* AFHTTPSessionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
