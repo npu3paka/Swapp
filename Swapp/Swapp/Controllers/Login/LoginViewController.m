@@ -63,7 +63,6 @@
     Title.textAlignment = NSTextAlignmentCenter;
     Title.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:60.0];
     
-    
     [self.view addSubview:Title];
     
     [_shimmeringView anchorTopCenterFillingWidthWithLeftAndRightPadding:20 topPadding:self.view.height/3-50 height:60];
@@ -105,7 +104,6 @@
     [fbloginbutton setBackgroundImage:[UIImage imageNamed:@"fblogin"] forState:UIControlStateNormal];
     [self.view addSubview:fbloginbutton];
     
-    fbloginbutton.layer.borderWidth = 2;
     [fbloginbutton setFrame:CGRectMake(Title.xMin+20,littleTitle.yMax + (copyright.yMin-littleTitle.yMax)/2-20, Title.width, 50)];
     
     HUD.dimBackground = YES;

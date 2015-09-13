@@ -56,6 +56,13 @@
 		29C6296C1BA58C92003D399D /* fblogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6296A1BA58C91003D399D /* fblogin@2x.png */; };
 		29C629701BA593FD003D399D /* TagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6296F1BA593FD003D399D /* TagViewController.m */; };
 		29C629751BA59606003D399D /* BoardTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629741BA59606003D399D /* BoardTag.m */; };
+		29C629791BA5A61B003D399D /* AddTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629781BA5A61A003D399D /* AddTagViewController.m */; };
+		29C629861BA5A727003D399D /* delButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6297C1BA5A727003D399D /* delButton.m */; };
+		29C629871BA5A727003D399D /* FriendRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6297F1BA5A727003D399D /* FriendRow.m */; };
+		29C629881BA5A727003D399D /* friendsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629821BA5A727003D399D /* friendsList.m */; };
+		29C629891BA5A727003D399D /* tagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629851BA5A727003D399D /* tagView.m */; };
+		29C629901BA5A771003D399D /* taggedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6298C1BA5A771003D399D /* taggedList.m */; };
+		29C629911BA5A771003D399D /* tagsRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6298F1BA5A771003D399D /* tagsRow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +173,20 @@
 		29C6296F1BA593FD003D399D /* TagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TagViewController.m; path = Controllers/TagView/TagViewController.m; sourceTree = "<group>"; };
 		29C629731BA59606003D399D /* BoardTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoardTag.h; path = Views/BoardTag/BoardTag.h; sourceTree = "<group>"; };
 		29C629741BA59606003D399D /* BoardTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BoardTag.m; path = Views/BoardTag/BoardTag.m; sourceTree = "<group>"; };
+		29C629771BA5A61A003D399D /* AddTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTagViewController.h; path = Controllers/addTag/AddTagViewController.h; sourceTree = "<group>"; };
+		29C629781BA5A61A003D399D /* AddTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTagViewController.m; path = Controllers/addTag/AddTagViewController.m; sourceTree = "<group>"; };
+		29C6297B1BA5A727003D399D /* delButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = delButton.h; sourceTree = "<group>"; };
+		29C6297C1BA5A727003D399D /* delButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = delButton.m; sourceTree = "<group>"; };
+		29C6297E1BA5A727003D399D /* FriendRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRow.h; sourceTree = "<group>"; };
+		29C6297F1BA5A727003D399D /* FriendRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRow.m; sourceTree = "<group>"; };
+		29C629811BA5A727003D399D /* friendsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = friendsList.h; sourceTree = "<group>"; };
+		29C629821BA5A727003D399D /* friendsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = friendsList.m; sourceTree = "<group>"; };
+		29C629841BA5A727003D399D /* tagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tagView.h; sourceTree = "<group>"; };
+		29C629851BA5A727003D399D /* tagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tagView.m; sourceTree = "<group>"; };
+		29C6298B1BA5A771003D399D /* taggedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = taggedList.h; sourceTree = "<group>"; };
+		29C6298C1BA5A771003D399D /* taggedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = taggedList.m; sourceTree = "<group>"; };
+		29C6298E1BA5A771003D399D /* tagsRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tagsRow.h; sourceTree = "<group>"; };
+		29C6298F1BA5A771003D399D /* tagsRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tagsRow.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,6 +451,7 @@
 		29C6294F1BA58729003D399D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				29C629761BA5A5F1003D399D /* addTag */,
 				29C6296D1BA593EB003D399D /* TagView */,
 				29C629651BA58B13003D399D /* Dashboard */,
 				29C629581BA5887D003D399D /* Base */,
@@ -503,6 +525,12 @@
 		29C629711BA595DE003D399D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				29C6298A1BA5A771003D399D /* TaggedList */,
+				29C6298D1BA5A771003D399D /* TagsRow */,
+				29C6297A1BA5A727003D399D /* DelButton */,
+				29C6297D1BA5A727003D399D /* FriendRow */,
+				29C629801BA5A727003D399D /* FriendsList */,
+				29C629831BA5A727003D399D /* tagView */,
 				29C629721BA595E7003D399D /* BoardTag */,
 			);
 			name = Views;
@@ -515,6 +543,75 @@
 				29C629741BA59606003D399D /* BoardTag.m */,
 			);
 			name = BoardTag;
+			sourceTree = "<group>";
+		};
+		29C629761BA5A5F1003D399D /* addTag */ = {
+			isa = PBXGroup;
+			children = (
+				29C629771BA5A61A003D399D /* AddTagViewController.h */,
+				29C629781BA5A61A003D399D /* AddTagViewController.m */,
+			);
+			name = addTag;
+			sourceTree = "<group>";
+		};
+		29C6297A1BA5A727003D399D /* DelButton */ = {
+			isa = PBXGroup;
+			children = (
+				29C6297B1BA5A727003D399D /* delButton.h */,
+				29C6297C1BA5A727003D399D /* delButton.m */,
+			);
+			name = DelButton;
+			path = Views/DelButton;
+			sourceTree = "<group>";
+		};
+		29C6297D1BA5A727003D399D /* FriendRow */ = {
+			isa = PBXGroup;
+			children = (
+				29C6297E1BA5A727003D399D /* FriendRow.h */,
+				29C6297F1BA5A727003D399D /* FriendRow.m */,
+			);
+			name = FriendRow;
+			path = Views/FriendRow;
+			sourceTree = "<group>";
+		};
+		29C629801BA5A727003D399D /* FriendsList */ = {
+			isa = PBXGroup;
+			children = (
+				29C629811BA5A727003D399D /* friendsList.h */,
+				29C629821BA5A727003D399D /* friendsList.m */,
+			);
+			name = FriendsList;
+			path = Views/FriendsList;
+			sourceTree = "<group>";
+		};
+		29C629831BA5A727003D399D /* tagView */ = {
+			isa = PBXGroup;
+			children = (
+				29C629841BA5A727003D399D /* tagView.h */,
+				29C629851BA5A727003D399D /* tagView.m */,
+			);
+			name = tagView;
+			path = Views/tagView;
+			sourceTree = "<group>";
+		};
+		29C6298A1BA5A771003D399D /* TaggedList */ = {
+			isa = PBXGroup;
+			children = (
+				29C6298B1BA5A771003D399D /* taggedList.h */,
+				29C6298C1BA5A771003D399D /* taggedList.m */,
+			);
+			name = TaggedList;
+			path = Views/TaggedList;
+			sourceTree = "<group>";
+		};
+		29C6298D1BA5A771003D399D /* TagsRow */ = {
+			isa = PBXGroup;
+			children = (
+				29C6298E1BA5A771003D399D /* tagsRow.h */,
+				29C6298F1BA5A771003D399D /* tagsRow.m */,
+			);
+			name = TagsRow;
+			path = Views/TagsRow;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -623,9 +720,12 @@
 			files = (
 				29C629391BA5840E003D399D /* UIColor+NHExtension.m in Sources */,
 				29C629431BA5840E003D399D /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				29C629901BA5A771003D399D /* taggedList.m in Sources */,
 				29C629481BA5840E003D399D /* UIRefreshControl+AFNetworking.m in Sources */,
 				29C629451BA5840E003D399D /* UIButton+AFNetworking.m in Sources */,
+				29C629911BA5A771003D399D /* tagsRow.m in Sources */,
 				29C629441BA5840E003D399D /* UIAlertView+AFNetworking.m in Sources */,
+				29C629861BA5A727003D399D /* delButton.m in Sources */,
 				29C629351BA5840E003D399D /* AFURLConnectionOperation.m in Sources */,
 				29C629301BA5840E003D399D /* AFHTTPRequestOperation.m in Sources */,
 				29C6295B1BA5888D003D399D /* BaseViewController.m in Sources */,
@@ -634,6 +734,7 @@
 				29C629381BA5840E003D399D /* AFURLSessionManager.m in Sources */,
 				29C629361BA5840E003D399D /* AFURLRequestSerialization.m in Sources */,
 				29C6293D1BA5840E003D399D /* FBShimmeringLayer.m in Sources */,
+				29C629791BA5A61B003D399D /* AddTagViewController.m in Sources */,
 				29C629471BA5840E003D399D /* UIProgressView+AFNetworking.m in Sources */,
 				29C6293B1BA5840E003D399D /* UIView+NHExtension.m in Sources */,
 				29C628C51BA58348003D399D /* ViewController.m in Sources */,
@@ -643,8 +744,10 @@
 				29C629411BA5840E003D399D /* PICollectionPageView.m in Sources */,
 				29C628C21BA58348003D399D /* AppDelegate.m in Sources */,
 				29C629681BA58B2F003D399D /* DashboardViewController.m in Sources */,
+				29C629871BA5A727003D399D /* FriendRow.m in Sources */,
 				29C629641BA58984003D399D /* User.m in Sources */,
 				29C6294A1BA5840E003D399D /* XHRealTimeBlur.m in Sources */,
+				29C629881BA5A727003D399D /* friendsList.m in Sources */,
 				29C629531BA58753003D399D /* LoginViewController.m in Sources */,
 				29C6293F1BA5840E003D399D /* MBProgressHUD.m in Sources */,
 				29C628BF1BA58348003D399D /* main.m in Sources */,
@@ -660,6 +763,7 @@
 				29C6293A1BA5840E003D399D /* UILabel+Boldify.m in Sources */,
 				29C629751BA59606003D399D /* BoardTag.m in Sources */,
 				29C629321BA5840E003D399D /* AFHTTPSessionManager.m in Sources */,
+				29C629891BA5A727003D399D /* tagView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

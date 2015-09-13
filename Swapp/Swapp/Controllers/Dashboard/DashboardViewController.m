@@ -274,9 +274,54 @@
     }];
 }
 
+-(void)getAllPictures
+{
+    NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
+    
+    library = [[ALAssetsLibrary alloc] init];
+    
+    void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        if(result != nil) {
+            if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+                [assetURLDictionaries addObject:result];
+            }
+        }
+    };
+    
+    void (^ assetGroupEnumerator) ( ALAssetsGroup *, BOOL *)= ^(ALAssetsGroup *group, BOOL *stop) {
+        if(group != nil) {
+            [group enumerateAssetsUsingBlock:assetEnumerator];
+            [settings setImages:assetURLDictionaries];
+            
+            [self performSegueWithIdentifier:@"addTag" sender:nil];
+            
+        }
+    };
+    
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                           usingBlock:assetGroupEnumerator
+                         failureBlock:^(NSError *error) {NSLog(@"There is an error");}];
+}
+
+-(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
+    
+}
+
+- (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
+    
+    [FBSDKAccessToken setCurrentAccessToken:nil];
+    
+    Settings *set = [Settings sharedInstance];
+    set.current_user = nil;
+    set.friends = nil;
+    set.closefriends = nil;
+
+    [self performSegueWithIdentifier:@"showLogin" sender:nil];
+}
+
 - (void) openTagView {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //[self getAllPictures];
+    [self getAllPictures];
 }
 
 - (void) tagPressed:(BoardTag *)sender {
@@ -309,14 +354,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
 }
-*/
+
 
 @end

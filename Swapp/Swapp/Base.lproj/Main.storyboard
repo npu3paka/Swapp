@@ -38,10 +38,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="show" identifier="showLogin" id="CVB-mY-JLd"/>
+                        <segue destination="PKL-y0-9KF" kind="show" identifier="addTag" id="702-ZK-QhW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ba0-KN-Nd2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="340" y="385"/>
+            <point key="canvasLocation" x="290" y="385"/>
+        </scene>
+        <!--Add Tag View Controller-->
+        <scene sceneID="7Mc-XS-EZo">
+            <objects>
+                <viewController id="PKL-y0-9KF" customClass="AddTagViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gue-PO-OBm"/>
+                        <viewControllerLayoutGuide type="bottom" id="eqQ-XF-HZV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="C6a-oq-H28">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="PbS-AZ-f7a" kind="show" identifier="showDashboard" id="4DS-bf-9E2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3xE-3X-XXS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="986" y="385"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="4DS-bf-9E2"/>
+    </inferredMetricsTieBreakers>
 </document>

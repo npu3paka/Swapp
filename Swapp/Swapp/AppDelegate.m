@@ -59,6 +59,9 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 }
 
 - (void)setupNormalRootViewController {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:@"1" forKey:kUserHasOnboardedKey];
+        [defaults synchronize];
     
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LoginViewController *vc = [sb instantiateViewControllerWithIdentifier:@"loginView"];
