@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Altimir Antonov. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : BaseViewController
 
 @end

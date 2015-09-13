@@ -46,6 +46,14 @@
 		29C6294D1BA58689003D399D /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6294B1BA58689003D399D /* blue.png */; };
 		29C6294E1BA58689003D399D /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6294C1BA58689003D399D /* red.png */; };
 		29C629531BA58753003D399D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629521BA58753003D399D /* LoginViewController.m */; };
+		29C629561BA58840003D399D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29C629541BA58840003D399D /* FBSDKCoreKit.framework */; };
+		29C629571BA58840003D399D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29C629551BA58840003D399D /* FBSDKLoginKit.framework */; };
+		29C6295B1BA5888D003D399D /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6295A1BA5888D003D399D /* BaseViewController.m */; };
+		29C6295F1BA5893E003D399D /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6295E1BA5893E003D399D /* Settings.m */; };
+		29C629641BA58984003D399D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629631BA58984003D399D /* User.m */; };
+		29C629681BA58B2F003D399D /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C629671BA58B2F003D399D /* DashboardViewController.m */; };
+		29C6296B1BA58C92003D399D /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 29C629691BA58C91003D399D /* background.jpg */; };
+		29C6296C1BA58C92003D399D /* fblogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C6296A1BA58C91003D399D /* fblogin@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +148,18 @@
 		29C6294C1BA58689003D399D /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
 		29C629511BA58753003D399D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Controllers/Login/LoginViewController.h; sourceTree = "<group>"; };
 		29C629521BA58753003D399D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Controllers/Login/LoginViewController.m; sourceTree = "<group>"; };
+		29C629541BA58840003D399D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		29C629551BA58840003D399D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		29C629591BA5888D003D399D /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseViewController.h; path = Controllers/Base/BaseViewController.h; sourceTree = "<group>"; };
+		29C6295A1BA5888D003D399D /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseViewController.m; path = Controllers/Base/BaseViewController.m; sourceTree = "<group>"; };
+		29C6295D1BA5893E003D399D /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = Setting/Settings.h; sourceTree = "<group>"; };
+		29C6295E1BA5893E003D399D /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = Setting/Settings.m; sourceTree = "<group>"; };
+		29C629621BA58984003D399D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User/User.h; sourceTree = "<group>"; };
+		29C629631BA58984003D399D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User/User.m; sourceTree = "<group>"; };
+		29C629661BA58B2F003D399D /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DashboardViewController.h; path = Controllers/Dashboard/DashboardViewController.h; sourceTree = "<group>"; };
+		29C629671BA58B2F003D399D /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashboardViewController.m; path = Controllers/Dashboard/DashboardViewController.m; sourceTree = "<group>"; };
+		29C629691BA58C91003D399D /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		29C6296A1BA58C91003D399D /* fblogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fblogin@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +167,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29C629571BA58840003D399D /* FBSDKLoginKit.framework in Frameworks */,
+				29C629561BA58840003D399D /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +185,8 @@
 		29C628B01BA58348003D399D = {
 			isa = PBXGroup;
 			children = (
+				29C629541BA58840003D399D /* FBSDKCoreKit.framework */,
+				29C629551BA58840003D399D /* FBSDKLoginKit.framework */,
 				29C628BB1BA58348003D399D /* Swapp */,
 				29C628D51BA58348003D399D /* SwappTests */,
 				29C628BA1BA58348003D399D /* Products */,
@@ -181,6 +205,8 @@
 		29C628BB1BA58348003D399D /* Swapp */ = {
 			isa = PBXGroup;
 			children = (
+				29C629601BA5896A003D399D /* Models */,
+				29C6295C1BA588FF003D399D /* Settings */,
 				29C6294F1BA58729003D399D /* Controllers */,
 				29C628E21BA583AB003D399D /* Libraries */,
 				29C628C01BA58348003D399D /* AppDelegate.h */,
@@ -198,6 +224,8 @@
 		29C628BC1BA58348003D399D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				29C629691BA58C91003D399D /* background.jpg */,
+				29C6296A1BA58C91003D399D /* fblogin@2x.png */,
 				29C6294B1BA58689003D399D /* blue.png */,
 				29C6294C1BA58689003D399D /* red.png */,
 				29C628BD1BA58348003D399D /* Info.plist */,
@@ -395,6 +423,8 @@
 		29C6294F1BA58729003D399D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				29C629651BA58B13003D399D /* Dashboard */,
+				29C629581BA5887D003D399D /* Base */,
 				29C629501BA58735003D399D /* Login */,
 			);
 			name = Controllers;
@@ -407,6 +437,50 @@
 				29C629521BA58753003D399D /* LoginViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		29C629581BA5887D003D399D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				29C629591BA5888D003D399D /* BaseViewController.h */,
+				29C6295A1BA5888D003D399D /* BaseViewController.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		29C6295C1BA588FF003D399D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				29C6295D1BA5893E003D399D /* Settings.h */,
+				29C6295E1BA5893E003D399D /* Settings.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		29C629601BA5896A003D399D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				29C629611BA58971003D399D /* User */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		29C629611BA58971003D399D /* User */ = {
+			isa = PBXGroup;
+			children = (
+				29C629621BA58984003D399D /* User.h */,
+				29C629631BA58984003D399D /* User.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		29C629651BA58B13003D399D /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				29C629661BA58B2F003D399D /* DashboardViewController.h */,
+				29C629671BA58B2F003D399D /* DashboardViewController.m */,
+			);
+			name = Dashboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -489,9 +563,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29C6296C1BA58C92003D399D /* fblogin@2x.png in Resources */,
 				29C628C81BA58348003D399D /* Main.storyboard in Resources */,
 				29C628CD1BA58348003D399D /* LaunchScreen.xib in Resources */,
 				29C628CA1BA58348003D399D /* Images.xcassets in Resources */,
+				29C6296B1BA58C92003D399D /* background.jpg in Resources */,
 				29C6294E1BA58689003D399D /* red.png in Resources */,
 				29C6294D1BA58689003D399D /* blue.png in Resources */,
 			);
@@ -518,6 +594,7 @@
 				29C629441BA5840E003D399D /* UIAlertView+AFNetworking.m in Sources */,
 				29C629351BA5840E003D399D /* AFURLConnectionOperation.m in Sources */,
 				29C629301BA5840E003D399D /* AFHTTPRequestOperation.m in Sources */,
+				29C6295B1BA5888D003D399D /* BaseViewController.m in Sources */,
 				29C6293E1BA5840E003D399D /* FBShimmeringView.m in Sources */,
 				29C629331BA5840E003D399D /* AFNetworkReachabilityManager.m in Sources */,
 				29C629381BA5840E003D399D /* AFURLSessionManager.m in Sources */,
@@ -530,6 +607,8 @@
 				29C629371BA5840E003D399D /* AFURLResponseSerialization.m in Sources */,
 				29C629411BA5840E003D399D /* PICollectionPageView.m in Sources */,
 				29C628C21BA58348003D399D /* AppDelegate.m in Sources */,
+				29C629681BA58B2F003D399D /* DashboardViewController.m in Sources */,
+				29C629641BA58984003D399D /* User.m in Sources */,
 				29C6294A1BA5840E003D399D /* XHRealTimeBlur.m in Sources */,
 				29C629531BA58753003D399D /* LoginViewController.m in Sources */,
 				29C6293F1BA5840E003D399D /* MBProgressHUD.m in Sources */,
@@ -537,6 +616,7 @@
 				29C629461BA5840E003D399D /* UIImageView+AFNetworking.m in Sources */,
 				29C629401BA5840E003D399D /* NHAutoCompleteTextField.m in Sources */,
 				29C629311BA5840E003D399D /* AFHTTPRequestOperationManager.m in Sources */,
+				29C6295F1BA5893E003D399D /* Settings.m in Sources */,
 				29C629341BA5840E003D399D /* AFSecurityPolicy.m in Sources */,
 				29C628E91BA583DD003D399D /* OnboardingViewController.m in Sources */,
 				29C629421BA5840E003D399D /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -669,6 +749,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Swapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -679,6 +763,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Swapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
