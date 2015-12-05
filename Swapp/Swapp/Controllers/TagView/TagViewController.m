@@ -18,7 +18,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];
     [self.view addSubview:imageView];
     

@@ -84,6 +84,8 @@
 		29C629911BA5A771003D399D /* tagsRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C6298F1BA5A771003D399D /* tagsRow.m */; };
 		40408D8F1C04457300CD61AA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40408D8D1C04457200CD61AA /* Fabric.framework */; };
 		40408D901C04457300CD61AA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40408D8E1C04457300CD61AA /* Crashlytics.framework */; };
+		4067F6441C12C763000D03A3 /* ApolloDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 4067F6431C12C763000D03A3 /* ApolloDB.m */; };
+		4067F6461C12C76F000D03A3 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4067F6451C12C76F000D03A3 /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,6 +231,9 @@
 		29C6298F1BA5A771003D399D /* tagsRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tagsRow.m; sourceTree = "<group>"; };
 		40408D8D1C04457200CD61AA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		40408D8E1C04457300CD61AA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		4067F6421C12C763000D03A3 /* ApolloDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApolloDB.h; sourceTree = "<group>"; };
+		4067F6431C12C763000D03A3 /* ApolloDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApolloDB.m; sourceTree = "<group>"; };
+		4067F6451C12C76F000D03A3 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +241,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4067F6461C12C76F000D03A3 /* JavaScriptCore.framework in Frameworks */,
 				29C629571BA58840003D399D /* FBSDKLoginKit.framework in Frameworks */,
 				29C629561BA58840003D399D /* FBSDKCoreKit.framework in Frameworks */,
 				40408D901C04457300CD61AA /* Crashlytics.framework in Frameworks */,
@@ -286,6 +292,7 @@
 		29C628B01BA58348003D399D = {
 			isa = PBXGroup;
 			children = (
+				4067F6451C12C76F000D03A3 /* JavaScriptCore.framework */,
 				40408D8D1C04457200CD61AA /* Fabric.framework */,
 				40408D8E1C04457300CD61AA /* Crashlytics.framework */,
 				29C629541BA58840003D399D /* FBSDKCoreKit.framework */,
@@ -363,6 +370,7 @@
 		29C628E21BA583AB003D399D /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4067F6411C12C763000D03A3 /* ApolloDB */,
 				29C628EA1BA5840E003D399D /* AFNetworking */,
 				29C628FE1BA5840E003D399D /* Extensions */,
 				29C629051BA5840E003D399D /* Facade */,
@@ -695,6 +703,16 @@
 			path = Views/TagsRow;
 			sourceTree = "<group>";
 		};
+		4067F6411C12C763000D03A3 /* ApolloDB */ = {
+			isa = PBXGroup;
+			children = (
+				4067F6421C12C763000D03A3 /* ApolloDB.h */,
+				4067F6431C12C763000D03A3 /* ApolloDB.m */,
+			);
+			name = ApolloDB;
+			path = Libraries/ApolloDB;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -850,6 +868,7 @@
 				29C6293E1BA5840E003D399D /* FBShimmeringView.m in Sources */,
 				29C629331BA5840E003D399D /* AFNetworkReachabilityManager.m in Sources */,
 				29C629381BA5840E003D399D /* AFURLSessionManager.m in Sources */,
+				4067F6441C12C763000D03A3 /* ApolloDB.m in Sources */,
 				29C629361BA5840E003D399D /* AFURLRequestSerialization.m in Sources */,
 				29C6293D1BA5840E003D399D /* FBShimmeringLayer.m in Sources */,
 				29C629791BA5A61B003D399D /* AddTagViewController.m in Sources */,

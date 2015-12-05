@@ -297,7 +297,7 @@ static int imageWidth = 40;
     for (UIView *v in [imageView subviews]) {
         [v removeFromSuperview];
     }
-    NSURL *aURL= (NSURL*) [[settings.images[shownpic] defaultRepresentation]url];
+    NSURL *aURL = [[NSURL alloc] initWithString: settings.dicImages[settings.images[shownpic]]];
     
     currentImageName = aURL;
     library = [[ALAssetsLibrary alloc] init];
@@ -525,7 +525,6 @@ static int imageWidth = 40;
     //    }];
     //    [uploadTask resume];
     
-    
     [defaults setObject:tagsForSaving forKey:@"images"];
     [defaults synchronize];
   if (settings.current_user.newReg && tags.count > 0) {
@@ -537,6 +536,7 @@ static int imageWidth = 40;
         [self performSegueWithIdentifier:@"showDashboard" sender:nil];
     }
     
+    [settings setImageAsUsed:settings.images[shownpic]];
     shownpic++;
     if(shownpic+1 >= [settings.images count]) {
         next.hidden = YES;

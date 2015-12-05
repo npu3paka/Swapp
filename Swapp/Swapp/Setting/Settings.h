@@ -16,6 +16,10 @@
 @property (nonatomic, assign) NSArray *friends;
 @property (nonatomic, assign) NSArray *closefriends;
 @property (nonatomic, assign) NSArray *images;
+@property (nonatomic, assign) NSDictionary *dicImages;
 @property (nonatomic, assign) NSArray *ownImages;
+
+- (void) addNewImages:(NSArray *) imagList;
+- (void) setImageAsUsed: (NSString *) name;
 
 @end
