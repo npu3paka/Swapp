@@ -7,6 +7,8 @@
 //
 
 #import "BaseViewController.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface DashboardViewController : BaseViewController
 

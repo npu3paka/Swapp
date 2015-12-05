@@ -12,8 +12,10 @@
 #import "LoginViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <CrashlyticsDelegate>
 
 @end
 
@@ -24,6 +26,8 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBSDKLoginButton class];
+    CrashlyticsKit.delegate = self;
+    [Fabric with:@[[Crashlytics class]]];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -49,6 +53,21 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                    didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)crashlyticsDidDetectReportForLastExecution:(CLSReport *)report completionHandler:(void (^)(BOOL))completionHandler {
+    // Use this opportinity to take synchronous action on a crash. See Crashlytics.h for
+    // details and implications.
+    
+    // Maybe consult NSUserDefaults or show a UI prompt.
+    
+    // But, make ABSOLUTELY SURE you invoke completionHandler, as the SDK
+    // will not submit the report until you do. You can do this from any
+    // thread, but that's optional. If you want, you can just call the
+    // completionHandler and return.
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        completionHandler(YES);
+    }];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

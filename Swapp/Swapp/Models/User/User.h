@@ -16,5 +16,7 @@
 @property (nonatomic,strong) NSString *name;
 @property (nonatomic,strong) NSString *imageUrl;
 @property (nonatomic,assign) BOOL normal;
+@property (nonatomic,assign) BOOL newReg;
+
 
 @end

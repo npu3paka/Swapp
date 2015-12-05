@@ -10,4 +10,7 @@
 
 @interface AddTagViewController : BaseViewController
 
+@property (nonatomic, assign) BOOL isNew;
+
+
 @end

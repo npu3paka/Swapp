@@ -66,12 +66,16 @@ static int imageWidth = 40;
     tagView *tagToBeDeleted;
     
     BOOL listisShown;
+    
+    int taggedImages;
 }
 
 #define kCellIdentifier @"cellIdentifier"
 
 - (void)viewDidLoad {
     shownpic = 0;
+    
+    taggedImages = 0;
     showUsername = YES;
     showSettings = NO;
     listisShown = NO;
@@ -259,7 +263,6 @@ static int imageWidth = 40;
     recognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     recognizer.delegate = self;
     [imageView addGestureRecognizer:recognizer];
-    
 }
 
 - (void)swipeRecognizer:(UISwipeGestureRecognizer *)sender {
@@ -386,9 +389,39 @@ static int imageWidth = 40;
     }
 }
 
+- (NSString*)base64forData:(NSData*) theData {
+  const uint8_t* input = (const uint8_t*)[theData bytes];
+  NSInteger length = [theData length];
+  
+  static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  
+  NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+  uint8_t* output = (uint8_t*)data.mutableBytes;
+  
+  NSInteger i;
+  for (i=0; i < length; i += 3) {
+    NSInteger value = 0;
+    NSInteger j;
+    for (j = i; j < (i + 3); j++) {
+      value <<= 8;
+      
+      if (j < length) {
+        value |= (0xFF & input[j]);
+      }
+    }
+    
+    NSInteger theIndex = (i / 3) * 4;
+    output[theIndex + 0] =                    table[(value >> 18) & 0x3F];
+    output[theIndex + 1] =                    table[(value >> 12) & 0x3F];
+    output[theIndex + 2] = (i + 1) < length ? table[(value >> 6)  & 0x3F] : '=';
+    output[theIndex + 3] = (i + 2) < length ? table[(value >> 0)  & 0x3F] : '=';
+  }
+  
+  return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+}
 
 - (void)showNext {
-    
+  
     [UIView animateWithDuration:0.3 animations:^{
     } completion:^(BOOL finished) {
         imageView.hidden = NO;
@@ -415,14 +448,18 @@ static int imageWidth = 40;
         if(tag.user.normal) {
             normal = @"1";
         }
+      
+      NSArray *coord = @[[NSNumber numberWithFloat:tag.tagPosition.x] ,[NSNumber numberWithFloat:tag.tagPosition.y]];
+        if(tag.user.userId) {
         [tagsForSaving addObject:@{
                                    @"fb_id": tag.user.userId,
                                    @"name": tag.user.name,
                                    @"profile_image": tag.user.imageUrl,
-                                   @"tag_position":NSStringFromCGPoint(tag.tagPosition),
+                                   @"tag_position": coord,
                                    @"normal": normal
                                    }];
         tagNames = [tagNames stringByAppendingString:[NSString stringWithFormat:@"%@,", tag.user.userId]];
+        }
         //        [arrayOfTags addObject:tagsForSaving];
     }
     
@@ -433,15 +470,20 @@ static int imageWidth = 40;
     //    AFHTTPRequestOperationManager *requestManager = [AFHTTPRequestOperationManager new];
     
     NSData *imageData = UIImageJPEGRepresentation(imageView.image, 0.7);
-    
+  
+  NSString *imageString = [self base64forData:imageData];
+//  NSString *data = [self dictionaryToJSON:tagsForSaving];
+  
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:tagsForSaving options:NSJSONWritingPrettyPrinted error:nil];
+  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] initWithDictionary: @{
                                                                                          @"author": settings.current_user.userId,
-                                                                                         @"tag_users": tagsForSaving,
-                                                                                         @"image_source": @"0"
+                                                                                         @"tag_users":  jsonString,
+                                                                                         @"image_source": imageString
                                                                                          }];
     
-    NSString *data = [self dictionaryToJSON:dictionary];
-    
+  
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     //    manager.requestSerializer =  [AFJSONRequestSerializer serializer];
@@ -449,11 +491,12 @@ static int imageWidth = 40;
     NSLog(@"dictionary: %@", dictionary);
     
     
-    [manager POST:@"http://alti.risunka.bg/backend_dev.php/tag" parameters:data success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/tag" parameters:dictionary success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         
         //        [fetchedImages addObject:dic];
         ;
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -485,6 +528,14 @@ static int imageWidth = 40;
     
     [defaults setObject:tagsForSaving forKey:@"images"];
     [defaults synchronize];
+  if (settings.current_user.newReg && tags.count > 0) {
+        taggedImages++;
+    }
+    
+    if(taggedImages == 2) {
+      settings.current_user.newReg = NO;
+        [self performSegueWithIdentifier:@"showDashboard" sender:nil];
+    }
     
     shownpic++;
     if(shownpic+1 >= [settings.images count]) {
@@ -492,6 +543,7 @@ static int imageWidth = 40;
     } else {
         [self getSpecificPicture];
     }
+    
     [tags removeAllObjects];
 }
 

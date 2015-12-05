@@ -39,22 +39,26 @@
 - (void) drawView {
     UIButton *backButton = [UIButton new];
     
-    [backButton setTitle:@"Back" forState:UIControlStateNormal];
-    
+//    [backButton setTitle:@"Back" forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"Back-50"] forState:UIControlStateNormal];
+
     [self.view addSubview:backButton];
     
-    [backButton anchorTopLeftWithLeftPadding:20 topPadding:20 width:50 height:40];
+    [backButton anchorTopLeftWithLeftPadding:10 topPadding:20 width:50 height:40];
     
     [backButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *opButton = [UIButton new];
     
     [self.view addSubview:opButton];
-    
-    [opButton setTitle:@"Option" forState:UIControlStateNormal];
-    
-    [opButton anchorBottomRightWithRightPadding:10 bottomPadding:10 width:50 height:40];
-    
+  
+  [opButton setImage:[UIImage imageNamed:@"Menu-50"] forState:UIControlStateNormal];
+//    [opButton setTitle:@"Option" forState:UIControlStateNormal];
+  
+  [opButton anchorTopRightWithRightPadding:10 topPadding:20 width:50 height:50];
+  
+//    [opButton anchorBottomRightWithRightPadding:10 bottomPadding:10 width:50 height:40];
+  
     
     [opButton addTarget:self action:@selector(opButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
