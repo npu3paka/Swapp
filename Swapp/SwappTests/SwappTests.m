@@ -27,6 +27,7 @@
 
 - (void)testExample {
     // This is an example of a functional test case.
+    //Best Mada Faka
     XCTAssert(YES, @"Pass");
 }
 
