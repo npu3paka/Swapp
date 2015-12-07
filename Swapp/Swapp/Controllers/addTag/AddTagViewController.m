@@ -297,7 +297,9 @@ static int imageWidth = 40;
     for (UIView *v in [imageView subviews]) {
         [v removeFromSuperview];
     }
-    NSURL *aURL = [[NSURL alloc] initWithString: settings.dicImages[settings.images[shownpic]]];
+    NSURL *aURL;
+    if(settings.images.count!=0) {
+        NSURL *aURL = [[NSURL alloc] initWithString: settings.dicImages[settings.images[shownpic]]];
     
     currentImageName = aURL;
     library = [[ALAssetsLibrary alloc] init];
@@ -305,13 +307,42 @@ static int imageWidth = 40;
      {
          UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1 orientation:UIImageOrientationUp];
 
-         [imageView setImage:copyOfOriginalImage];
+         
+         float minDimension = MIN(copyOfOriginalImage.size.width, copyOfOriginalImage.size.height);
+         float screenWidth = self.view.bounds.size.width;
+         
+         UIImage *newImage;
+         
+         if(minDimension > screenWidth) {
+             CGFloat scaleFactor = minDimension / screenWidth;
+             
+             UIGraphicsBeginImageContext(CGSizeMake(copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
+             [copyOfOriginalImage drawInRect:CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor)];
+             newImage = UIGraphicsGetImageFromCurrentImageContext();
+             UIGraphicsEndImageContext();
+             
+             
+//             CGContextRef ctx = UIGraphicsGetCurrentContext();
+//             
+//             //fill your custom view with a blue rect
+//             CGContextFillRect(ctx, CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
+             
+         } else {
+             newImage = copyOfOriginalImage;
+         }
+         
+         [imageView anchorCenterLeftWithLeftPadding:0 width:newImage.size.width height:newImage.size.height];
+         [imageView setImage:newImage];
+         
      }
             failureBlock:^(NSError *error)
      {
          // error handling
          NSLog(@"failure-----");
      }];
+    } else {
+        
+    }
 }
 
 - (void) openFriendsList {

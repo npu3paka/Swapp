@@ -10,6 +10,10 @@
 #include <AssetsLibrary/AssetsLibrary.h>
 #include "ApolloDB.h"
 
+
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 @implementation Settings {
     NSArray *friendsList;
     NSArray *closefriendsList;
@@ -69,17 +73,26 @@ static NSString *const kFriendKey = @"FBfriends";
     NSLog(@"already used images: \n %@", usedImageList);
     NSLog(@"images to bes used before: \n %@", imagList);
     
+    CLS_LOG(@"The all Images: ");
+    CLS_LOG(@"%@", imagList);
+    
+    CLS_LOG(@"The all Images name: ");
+    CLS_LOG(@"%lu", (unsigned long)imagList.count);
+    
     
     for (int i=0; i<imagList.count; i++) {
         NSString *filename = [[imagList[i] defaultRepresentation] filename];
-        [arrayWithNames addObject:filename];
-        NSURL *aURL= (NSURL*) [[imagList[i] defaultRepresentation]url];
-        
-        NSString *path = [aURL absoluteString];
-        if (![usedImageList containsObject:filename]) {
-            [dicWithImages setObject:path forKey:filename];
+        CLS_LOG(@"filename that is parsed at index:%d is: %@", i, filename);
+        if(filename) {
+            [arrayWithNames addObject:filename];
+            NSURL *aURL= (NSURL*) [[imagList[i] defaultRepresentation]url];
             
-            [privateImagesList addObject:filename];
+            NSString *path = [aURL absoluteString];
+            if (![usedImageList containsObject:filename]) {
+                [dicWithImages setObject:path forKey:filename];
+                
+                [privateImagesList addObject:filename];
+            }
         }
     }
     
@@ -103,8 +116,10 @@ static NSString *const kFriendKey = @"FBfriends";
     //    [[ApolloDB sharedManager]setObject:imagesList forKey:@"ownImages"];
     
     NSLog(@"before: \n %@", privateImagesList);
-    NSLog(@"after shuffle: \n %@", [self shuffle:privateImagesList]);
-    imagesList = [NSMutableArray arrayWithArray:[self shuffle:privateImagesList]];
+    if(privateImagesList.count != 0) {
+        NSLog(@"after shuffle: \n %@", [self shuffle:privateImagesList]);
+        imagesList = [NSMutableArray arrayWithArray:[self shuffle:privateImagesList]];
+    }
 }
 
 - (void) setImageAsUsed: (NSString *) name {

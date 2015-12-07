@@ -60,7 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    maxPerLine = 2;
+    maxPerLine = 4;
     settings = [Settings sharedInstance];
     
     CLS_LOG(@"The settings: ");
@@ -394,18 +394,18 @@
     
     
     double lastY = 0;
-    int imWidth = (self.view.width - 3*20)/2;
+    int imWidth = (self.view.width - (maxPerLine+1)*2)/maxPerLine;
     
     for(NSDictionary *imag in fetchedImages) {
         //[imageV setImage:image];
         
-        lastY = 20+imWidth*y+ maxPerLine*y+imWidth;
+        lastY = 5+imWidth*y+ maxPerLine*y+imWidth;
         
         BoardTag *tagViewButton = [[BoardTag alloc]init];
         [imagesScrollView addSubview:tagViewButton];
         tagViewButton.layer.borderWidth = 1;
         tagViewButton.clipsToBounds = YES;
-        [tagViewButton setFrame:CGRectMake(20 + 20*br + imWidth*br, 10+imWidth*y+ maxPerLine*y, imWidth, imWidth)];
+        [tagViewButton setFrame:CGRectMake(2 + 2*br + imWidth*br, 10+imWidth*y+ maxPerLine*y, imWidth, imWidth)];
         tagViewButton.full = NO;
         tagViewButton.layer.cornerRadius = imWidth/6;
         tagViewButton.radius = tagViewButton.layer.cornerRadius;
