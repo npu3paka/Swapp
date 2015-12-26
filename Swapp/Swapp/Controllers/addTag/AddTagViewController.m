@@ -331,7 +331,11 @@ static int imageWidth = 40;
              newImage = copyOfOriginalImage;
          }
          
-         [imageView anchorCenterLeftWithLeftPadding:0 width:newImage.size.width height:newImage.size.height];
+         CGFloat specialHeight =  newImage.size.height;
+         if(specialHeight > self.view.height-140) {
+             specialHeight = self.view.height-140;
+         }
+         [imageView anchorCenterLeftWithLeftPadding:0 width:newImage.size.width height:specialHeight];
          [imageView setImage:newImage];
          
      }
@@ -487,7 +491,7 @@ static int imageWidth = 40;
                                    @"name": tag.user.name,
                                    @"profile_image": tag.user.imageUrl,
                                    @"tag_position": coord,
-                                   @"normal": normal
+                                   @"normal": normal,
                                    }];
         tagNames = [tagNames stringByAppendingString:[NSString stringWithFormat:@"%@,", tag.user.userId]];
         }
@@ -512,9 +516,24 @@ static int imageWidth = 40;
                                                                                          @"author": settings.current_user.userId,
                                                                                          @"tag_users":  jsonString,
                                                                                          @"image_source": imageString
+                                                                                        
                                                                                          }];
-    
-  
+    if (self.isUnlocking) {
+        dictionary[@"tag_to_see"] = self.tagId;
+    }
+    if(tags.count==0) {
+        
+        [settings setImageAsUsed:settings.images[shownpic]];
+        shownpic++;
+        if(shownpic+1 >= [settings.images count]) {
+            next.hidden = YES;
+        } else {
+            [self getSpecificPicture];
+        }
+        
+        [tags removeAllObjects];
+
+    } else {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     //    manager.requestSerializer =  [AFJSONRequestSerializer serializer];
@@ -558,6 +577,10 @@ static int imageWidth = 40;
     
     [defaults setObject:tagsForSaving forKey:@"images"];
     [defaults synchronize];
+    
+    if(self.isUnlocking  && tags.count>0) {
+        [self performSegueWithIdentifier:@"showDashboard" sender:nil];
+    }
   if (settings.current_user.newReg && tags.count > 0) {
         taggedImages++;
     }
@@ -576,6 +599,7 @@ static int imageWidth = 40;
     }
     
     [tags removeAllObjects];
+    }
 }
 
 - (CGPoint)normalizedPositionForPoint:(CGPoint)point inFrame:(CGRect)frame

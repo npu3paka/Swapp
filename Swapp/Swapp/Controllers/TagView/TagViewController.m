@@ -9,6 +9,8 @@
 #import "TagViewController.h"
 #import "UIView+Ext.h"
 #include <AssetsLibrary/AssetsLibrary.h>
+#import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 @interface TagViewController () <UIActionSheetDelegate>
 
@@ -130,7 +132,16 @@
 }
 
 - (void) deleteImage {
+ AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
+    [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/delete_swapp" parameters:@{ @"swapp_tag_id" :self.imageId } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        
+        [self goBack];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

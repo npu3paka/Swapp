@@ -11,6 +11,9 @@
 @interface AddTagViewController : BaseViewController
 
 @property (nonatomic, assign) BOOL isNew;
+@property (nonatomic, assign) BOOL isUnlocking;
+@property (nonatomic, assign) NSString *tagId;
+
 
 
 @end

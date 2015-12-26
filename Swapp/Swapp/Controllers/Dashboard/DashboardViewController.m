@@ -15,15 +15,18 @@
 #import "BoardTag.h"
 
 #import <CoreImage/CoreImage.h>
-#include <AssetsLibrary/AssetsLibrary.h>
+//#include <AssetsLibrary/AssetsLibrary.h>
 #import "MBProgressHUD.h"
 #import "XHRealTimeBlur.h"
 #import "TagViewController.h"
 #import "AddTagViewController.h"
+#import "CustomSheet.h"
 //#import <Answers/Answers.h>
 
+@import Photos;
+
 @interface DashboardViewController () <FBSDKLoginButtonDelegate, UIActionSheetDelegate> {
-    ALAssetsLibrary *library;
+//    ALAssetsLibrary *library;
     Settings *settings;
     
     UIButton *add;
@@ -37,7 +40,7 @@
     UIView *imagesView;
     
     UIScrollView *imagesScrollView;
-    
+    UIView *imagesColView;
     UIView *sideMenu;
     
     BOOL sideMenuIsOpen;
@@ -51,6 +54,17 @@
     int maxPerLine;
     
     UILongPressGestureRecognizer *longPress;
+    
+    UIView *oneBigView;
+    
+    UIView *backgrVi;
+    
+    BOOL taggedUsers;
+    
+    BOOL isUnclogking;
+    NSString *unlockingId;
+    
+    BOOL isLoaded;
 }
 
 @end
@@ -59,8 +73,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    taggedUsers = false;
+    isUnclogking = false;
     
-    maxPerLine = 4;
+    oneBigView = [[UIView alloc] init];
+    imagesScrollView = [[UIScrollView alloc] init];
+    [self.view addSubview:imagesScrollView];
+    [imagesScrollView fillSuperview];
+    [imagesScrollView addSubview:oneBigView];
+    [oneBigView fillSuperview];
+    
+    maxPerLine = 3;
     settings = [Settings sharedInstance];
     
     CLS_LOG(@"The settings: ");
@@ -74,7 +97,7 @@
     [self getUser];
     
     [self downloadImages];
-    
+    [self.view bringSubviewToFront:imagesScrollView];
     // Do any additional setup after loading the view.
 }
 
@@ -85,19 +108,20 @@
     if (settings.current_user.newReg) {
         [self openTagView];
     }
+    
+//    [self drawView];
 }
 
 -(void) loadHeaderView {
     
-    UIImageView *backImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.jpg"]]
-    ;
+    UIImageView *backImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.jpg"]];
     [self.view addSubview:backImage];
     [backImage fillSuperview];
     
     [backImage showRealTimeBlurWithBlurStyle:XHBlurStyleBlackTranslucent];
     
     headerView = [[UIView alloc]init];
-    [self.view addSubview:headerView];
+    [oneBigView addSubview:headerView];
     [headerView anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:250];
     
     UIButton *menuButton = [[UIButton alloc] init];
@@ -325,17 +349,17 @@
     
     [self.view bringSubviewToFront:sideMenu];
     
-    UIView *backgrVi = [UIView new];
+    backgrVi = [UIView new];
     
     [backgrVi setBackgroundColor:[UIColor whiteColor]];
     backgrVi.alpha = 0.2;
-    [self.view addSubview:backgrVi];
+    [oneBigView addSubview:backgrVi];
     [backgrVi alignUnder:headerView centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
     
     scrollHeader = [UILabel new];
     
-    [scrollHeader setText:@"Tagged Swapps"];
-    [self.view addSubview:scrollHeader];
+    [scrollHeader setText:@"Received Swapps"];
+    [oneBigView addSubview:scrollHeader];
     scrollHeader.textAlignment = NSTextAlignmentCenter;
     [scrollHeader alignUnder:headerView centeredFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:45];
     
@@ -348,10 +372,12 @@
     NSLog(@"%ld",(long)touchedView.tag);
     
     NSString *url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_author_images";
-    scrollHeader.text = @"Own Tagged Swapps";
+    scrollHeader.text = @"Sent Swapps";
+    taggedUsers = true;
     if (touchedView.tag == 1) {
-        scrollHeader.text = @"Tagged Swapps";
+        scrollHeader.text = @"Received Swapps";
         url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_user_tags";
+        taggedUsers = false;
     }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -365,7 +391,12 @@
             fetchedImages = [arr copy];
             
             settings.ownImages = arr;
-            
+            if (touchedView.tag == 1) {
+                ResTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
+            }
+            if (touchedView.tag == 2) {
+                SentTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
+            }
             [self drawView];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -382,13 +413,13 @@
     int y = 0;
     int br = 0;
     
-    [imagesScrollView removeFromSuperview];
+    [imagesColView removeFromSuperview];
     
-    imagesScrollView = [[UIScrollView alloc] init];
+    imagesColView = [[UIView alloc] init];
     
-    [self.view addSubview:imagesScrollView];
+    [oneBigView addSubview:imagesColView];
     
-    [imagesScrollView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+    [imagesColView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
     //    imagesView = [[UIView alloc] init];
     //    [imagesScrollView addSubview:imagesView];
     
@@ -402,13 +433,18 @@
         lastY = 5+imWidth*y+ maxPerLine*y+imWidth;
         
         BoardTag *tagViewButton = [[BoardTag alloc]init];
-        [imagesScrollView addSubview:tagViewButton];
+        tagViewButton.swappId = imag[@"s_swapp_tag_id"];
+        if ([imag[@"s_can_see"]  isEqual: @"1"]) {
+            
+            tagViewButton.canSee = true;
+        } else {
+            tagViewButton.canSee = false;
+        }
+        [imagesColView addSubview:tagViewButton];
         tagViewButton.layer.borderWidth = 1;
         tagViewButton.clipsToBounds = YES;
         [tagViewButton setFrame:CGRectMake(2 + 2*br + imWidth*br, 10+imWidth*y+ maxPerLine*y, imWidth, imWidth)];
         tagViewButton.full = NO;
-        tagViewButton.layer.cornerRadius = imWidth/6;
-        tagViewButton.radius = tagViewButton.layer.cornerRadius;
         tagViewButton.fr = tagViewButton.frame;
         
         longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressTap:)];
@@ -425,8 +461,9 @@
         //ALAsset* asset = settings.images[shownpic];
         NSURL *aURL =  [NSURL URLWithString:[NSString stringWithFormat:@"http://alti.xn----8sbarabrujldb2bdye.eu/uploads/%@",imag[@"s_image_source"]]];
         
-        [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
-        
+        if(tagViewButton.canSee || taggedUsers) {
+            [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
+        }
         [tagViewButton.imageView setContentMode:UIViewContentModeScaleToFill];
         
         //        //NSURL* aURL = [NSURL URLWithString:settings.images[shownpic]];
@@ -449,8 +486,11 @@
     }
     
     //    [imagesView anchorTopLeftWithLeftPadding:0 topPadding:0 width:self.view.width height:lastY];
-    
-    imagesScrollView.contentSize = CGSizeMake(self.view.width, lastY);
+    imagesColView.frame = CGRectMake(imagesColView.xMin, imagesColView.yMin, self.view.width, lastY);
+    oneBigView.frame = CGRectMake(0, 0, self.view.width, imagesColView.yMax);
+    imagesScrollView.contentSize = CGSizeMake(self.view.width, oneBigView.yMax);
+    [backgrVi alignUnder:headerView centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+
     //    imagesScrollView.contentSize = imagesView.frame.size;
     
     [self.view bringSubviewToFront:add];
@@ -465,35 +505,65 @@
     if (recognizer.state == UIGestureRecognizerStateBegan){
         BoardTag *vi = recognizer.view;
         NSLog(@"%f, %f", vi.fr.origin.x, vi.fr.origin.y);
-        UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"Select option:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
-                                @"Save the swapp",
-                                @"Delete the swapp",
-                                nil];
-        popup.tag = 1;
-        [popup showInView:[UIApplication sharedApplication].keyWindow];
+//        CustomSheet *popup = [[UIActionSheet alloc] initWithTitle:@"Select option:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+//                                @"Save the swapp",
+//                                @"Delete the swapp",
+//                                nil];
+//        popup.swappId = vi.swappId;
+//        popup.tag = vi.swappId;
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Select Option:"
+                                                                       message:@""
+                                                                preferredStyle:UIAlertControllerStyleActionSheet]; // 1
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Save the swapp"
+                                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+
+//                                                                  NSLog(@"You pressed button one");
+                                                              }]; // 2
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"Delete the swapp"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [self deleteImage: vi.swappId];
+
+//                                                                   NSLog(@"You pressed button two");
+                                                               }]; // 3
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   //                                                                   NSLog(@"You pressed button two");
+                                                               }]; // 3
+        
+        [alert addAction:firstAction]; // 4
+        [alert addAction:secondAction]; // 5
+        [alert addAction:cancelAction]; // 5
+        
+        
+        [self presentViewController:alert animated:YES completion:nil]; // 6
+        
+//        [popup showInView:[UIApplication sharedApplication].keyWindow];
         
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    NSLog(@"%ld", (long)popup.tag);
-    switch (popup.tag) {
-        case 1: {
-            switch (buttonIndex) {
-                case 0:
-                    //          [self saveImage];
-                    break;
-                case 1:
-                    //          [self deleteImage];
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-}
+//- (void)actionSheet:(CustomSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    
+//    switch (popup.tag) {
+//        case 1: {
+//            switch (buttonIndex) {
+//                case 0:
+//                    //          [self saveImage];
+//                    break;
+//                case 1:
+//                    [self deleteImage: popup.swappId];
+//                    break;
+//            }
+//            break;
+//        }
+//        default:
+//            break;
+//    }
+//}
+
 - (void) getUser {
     CLS_LOG(@"The settings: ");
     CLS_LOG(@"%@", settings);
@@ -539,34 +609,43 @@
 
 -(void)getAllPictures
 {
-    NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
     
-    library = [[ALAssetsLibrary alloc] init];
+    PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
+    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
     
+    [settings addNewImages:allPhotos];
+    [self performSegueWithIdentifier:@"addTag" sender:nil];
+
     
-//    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-   
-    void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        if(result != nil) {
-            if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                [assetURLDictionaries addObject:result];
-            }
-        }
-    };
-    
-    void (^ assetGroupEnumerator) ( ALAssetsGroup *, BOOL *)= ^(ALAssetsGroup *group, BOOL *stop) {
-        if(group != nil) {
-            [group enumerateAssetsUsingBlock:assetEnumerator];
-            [settings addNewImages:assetURLDictionaries];
-            
-            [self performSegueWithIdentifier:@"addTag" sender:nil];
-            
-        }
-    };
-    
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                           usingBlock:assetGroupEnumerator
-                         failureBlock:^(NSError *error) {NSLog(@"There is an error");}];
+//    NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
+//    
+//    library = [[ALAssetsLibrary alloc] init];
+//    
+//    
+////    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+//   
+//    void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+//        if(result != nil) {
+//            if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+//                [assetURLDictionaries addObject:result];
+//            }
+//        }
+//    };
+//    
+//    void (^ assetGroupEnumerator) ( ALAssetsGroup *, BOOL *)= ^(ALAssetsGroup *group, BOOL *stop) {
+//        if(group != nil) {
+//            [group enumerateAssetsUsingBlock:assetEnumerator];
+//            [settings addNewImages:assetURLDictionaries];
+//            
+//            [self performSegueWithIdentifier:@"addTag" sender:nil];
+//            
+//        }
+//    };
+//    
+//    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+//                           usingBlock:assetGroupEnumerator
+//                         failureBlock:^(NSError *error) {NSLog(@"There is an error");}];
 }
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
@@ -592,13 +671,21 @@
 
 - (void) tagPressed:(BoardTag *)sender {
     
-    TagViewController *vc = [TagViewController new];
-    
-    [vc.view setBackgroundColor:[UIColor blackColor]];
-    
-    vc.image = sender.imageView.image;
-    
-    [self presentViewController:vc animated:YES completion:nil];
+    if(!sender.canSee) {
+        isUnclogking = true;
+        unlockingId = sender.swappId;
+        [self getAllPictures];
+
+    } else {
+        TagViewController *vc = [TagViewController new];
+        
+        [vc.view setBackgroundColor:[UIColor blackColor]];
+        
+        vc.image = sender.imageView.image;
+        vc.imageId = sender.swappId;
+        
+        [self presentViewController:vc animated:YES completion:nil];
+    }
 }
 
 - (void) openSideMenu {
@@ -615,6 +702,17 @@
     }];
 }
 
+- (void) deleteImage: (NSString *) imageId {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/delete_swapp" parameters:@{ @"swapp_tag_id" :imageId } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -628,6 +726,8 @@
     if([[segue identifier] isEqualToString:@"addTag"]) {
         AddTagViewController *vc = [segue destinationViewController];
         vc.isNew = YES;
+        vc.isUnlocking = isUnclogking;
+        vc.tagId = unlockingId;
     }
     
     // Get the new view controller using [segue destinationViewController].

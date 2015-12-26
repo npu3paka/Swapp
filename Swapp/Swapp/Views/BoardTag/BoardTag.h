@@ -10,7 +10,10 @@
 
 @interface BoardTag : UIButton
 @property (nonatomic, assign) BOOL full;
+@property (nonatomic, assign) BOOL canSee;
 @property (nonatomic, assign) CGRect fr;
 @property (nonatomic, assign) CGFloat radius;
+@property (nonatomic, strong) NSString *swappId;
+
 
 @end

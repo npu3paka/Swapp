@@ -101,19 +101,19 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 
 - (OnboardingViewController *)generateFirstDemoVC {
-    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:@"What A Beautiful Photo" body:@"This city background image is so beautiful." image:[UIImage imageNamed:@"blue"] buttonText:@"Enable Location Services" action:^{
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Here you can prompt users for various application permissions, providing them useful information about why you'd like those permissions to enhance their experience, increasing your chances they will grant those permissions." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:@"Swapps" body:@"Collect your moments." image:[UIImage imageNamed:@"blue"] buttonText:@"" action:^{
+        [[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     }];
     
-    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"I'm so sorry" body:@"I can't get over the nice blurry background photo." image:[UIImage imageNamed:@"red"] buttonText:@"Connect With Facebook" action:^{
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Prompt users to do other cool things on startup. As you can see, hitting the action button on the prior page brought you automatically to the next page. Cool, huh?" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"" body:@"Tag your friends to unlock pictures of you." image:[UIImage imageNamed:@"red"] buttonText:@"" action:^{
+        [[[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }];
     secondPage.movesToNextViewController = YES;
-    secondPage.viewDidAppearBlock = ^{
-        [[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"You've arrived on the second page, and this alert was displayed from within the page's viewDidAppearBlock." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    };
+//    secondPage.viewDidAppearBlock = ^{
+//        [[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"You've arrived on the second page, and this alert was displayed from within the page's viewDidAppearBlock." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+//    };
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Seriously Though" body:@"Kudos to the photographer." image:[UIImage imageNamed:@"yellow"] buttonText:@"Get Started" action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"The more friends you tag,the more friends tag you!" body:@"" image:[UIImage imageNamed:@"yellow"] buttonText:@"Get Started" action:^{
         [self handleOnboardingCompletion];
     }];
     
@@ -124,7 +124,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     
     // If you want to allow skipping the onboarding process, enable skipping and set a block to be executed
     // when the user hits the skip button.
-    onboardingVC.allowSkipping = YES;
+    onboardingVC.allowSkipping = NO;
     onboardingVC.skipHandler = ^{
         [self handleOnboardingCompletion];
     };

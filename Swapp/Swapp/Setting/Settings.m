@@ -62,7 +62,7 @@ static NSString *const kFriendKey = @"FBfriends";
     return imagesList;
 }
 
-- (void) addNewImages:(NSArray *) imagList {
+- (void) addNewImages:(PHFetchResult *) imagList {
     //    if(!imagesList) {
     //        imagesList = [NSMutableArray new];
     //    }
@@ -79,17 +79,16 @@ static NSString *const kFriendKey = @"FBfriends";
     CLS_LOG(@"The all Images name: ");
     CLS_LOG(@"%lu", (unsigned long)imagList.count);
     
-    
-    for (int i=0; i<imagList.count; i++) {
-        NSString *filename = [[imagList[i] defaultRepresentation] filename];
-        CLS_LOG(@"filename that is parsed at index:%d is: %@", i, filename);
+    for( PHAsset *asset in imagList) {
+        NSString *filename = asset.localIdentifier;
+        
         if(filename) {
             [arrayWithNames addObject:filename];
-            NSURL *aURL= (NSURL*) [[imagList[i] defaultRepresentation]url];
+//            NSURL *aURL= (NSURL*) [[imagList[i] defaultRepresentation]url];
             
-            NSString *path = [aURL absoluteString];
+//            NSString *path = [aURL absoluteString];
             if (![usedImageList containsObject:filename]) {
-                [dicWithImages setObject:path forKey:filename];
+//                [dicWithImages setObject:path forKey:filename];
                 
                 [privateImagesList addObject:filename];
             }
@@ -150,7 +149,9 @@ static NSString *const kFriendKey = @"FBfriends";
 - (void)setFriends:(NSArray *)friends
 {
     NSMutableArray *ss = [[NSMutableArray alloc] initWithArray:friends];
-    //[ss addObjectsFromArray:friends];
+//    [ss addObjectsFromArray:friends];
+//    [ss addObjectsFromArray:friends];
+//    [ss addObjectsFromArray:friends];
     
     friendsList = ss;
     //    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

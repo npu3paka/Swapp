@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 
+@import Photos
+
 @interface Settings : NSObject
 + (Settings *)sharedInstance;
 
@@ -19,7 +21,7 @@
 @property (nonatomic, assign) NSDictionary *dicImages;
 @property (nonatomic, assign) NSArray *ownImages;
 
-- (void) addNewImages:(NSArray *) imagList;
+- (void) addNewImages:(PHFetchResult *) imagList;
 - (void) setImageAsUsed: (NSString *) name;
 
 @end

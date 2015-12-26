@@ -65,7 +65,7 @@
     
     
     UILabel *Title = [[UILabel alloc] initWithFrame:_shimmeringView.bounds];
-    Title.text = @"SWAPP";
+    Title.text = @"SWAPPS";
     Title.textAlignment = NSTextAlignmentCenter;
     Title.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:60.0];
     
@@ -84,7 +84,7 @@
     
     UILabel *littleTitle = [[UILabel alloc]init];
     
-    littleTitle.text = @"This is little text";
+    littleTitle.text = @"Collect your moments";
     littleTitle.numberOfLines = 2;
     littleTitle.textAlignment = NSTextAlignmentCenter;
     littleTitle.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:30.0];
@@ -354,79 +354,79 @@
         
     }];
     
-    //  dispatch_group_enter(group);
-    //
-    //    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/taggable_friends" parameters:@{@"fields":@"id, name, picture", @"limit": @"5000"}]
-    //     startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-    //       if (!error) {
-    //
-    //         m_taggable_friends = result[@"data"];
-    //
-    //         //       NSArray *taggable_friends = result[@"data"];
-    //
-    //         //       NSArray *friends = result[@"friends"][@"data"];
-    //
-    //
-    //
-    //
-    //         HUD.labelText = @"Fetching Friends ...";
-    //
-    //         //       // Store the data
-    //         //       NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //         //       //[defaults removeObjectForKey:@"images"];
-    //         //       NSMutableArray *users = [[NSMutableArray alloc] initWithArray:[defaults objectForKey:@"users"]];
-    //         //       BOOL notFound = true;
-    //         //       for (NSDictionary *user in users) {
-    //         //
-    //         //         if([user[@"userId"] isEqualToString:dic[@"userId"]]) {
-    //         //           notFound = false;
-    //         //           break;
-    //         //         }
-    //         //       }
-    //         //
-    //         //       if(notFound) {
-    //         //         [users addObject:dic];
-    //         //       }
-    //         //
-    //         //       [defaults setObject:users forKey:@"users"];
-    //
-    //
-    //         //             [defaults setObject:firstName forKey:@"userInfo"];
-    //         //             [defaults setObject:lastName forKey:@"lastname"];
-    //         //             [defaults setInteger:age forKey:@"age"];
-    //         //             [defaults setObject:imageData forKey:@"image"];
-    //
-    //         //       [defaults synchronize];
-    //
-    //         NSLog(@"Data saved");
-    //         //             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    //         //
-    //         //             [manager POST:@"http://localhost/swapp/index.php" parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    //         //                 NSLog(@"JSON: %@", responseObject);
-    //         //             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    //         //                 NSLog(@"Error: %@", error);
-    //         //             }];
-    //         //       [MBProgressHUD hideHUDForView:self.view animated:YES];
-    //         //       _willGo = YES;
-    //         //       [self performSegueWithIdentifier:@"showDashboard" sender:nil];
-    //
-    //         dispatch_group_leave(group);
-    //       } else {
-    //         NSLog(@"%@", error);
-    //
-    //         //[self getFriends];
-    //           dispatch_group_leave(group);
-    //
-    //        // [MBProgressHUD hideHUDForView:self.view animated:YES];
-    //
-    //         //[self tryAgain];
-    //
-    //       }
-    //     }];
+//      dispatch_group_enter(group);
+//    
+//        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/taggable_friends" parameters:@{@"fields":@"id, name, picture", @"limit": @"5000"}]
+//         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//           if (!error) {
+//    
+//             m_taggable_friends = result[@"data"];
+//    
+//             //       NSArray *taggable_friends = result[@"data"];
+//    
+//             //       NSArray *friends = result[@"friends"][@"data"];
+//    
+//    
+//    
+//    
+//             HUD.labelText = @"Fetching Friends ...";
+//    
+//             //       // Store the data
+//             //       NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//             //       //[defaults removeObjectForKey:@"images"];
+//             //       NSMutableArray *users = [[NSMutableArray alloc] initWithArray:[defaults objectForKey:@"users"]];
+//             //       BOOL notFound = true;
+//             //       for (NSDictionary *user in users) {
+//             //
+//             //         if([user[@"userId"] isEqualToString:dic[@"userId"]]) {
+//             //           notFound = false;
+//             //           break;
+//             //         }
+//             //       }
+//             //
+//             //       if(notFound) {
+//             //         [users addObject:dic];
+//             //       }
+//             //
+//             //       [defaults setObject:users forKey:@"users"];
+//    
+//    
+//             //             [defaults setObject:firstName forKey:@"userInfo"];
+//             //             [defaults setObject:lastName forKey:@"lastname"];
+//             //             [defaults setInteger:age forKey:@"age"];
+//             //             [defaults setObject:imageData forKey:@"image"];
+//    
+//             //       [defaults synchronize];
+//    
+//             NSLog(@"Data saved");
+//             //             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//             //
+//             //             [manager POST:@"http://localhost/swapp/index.php" parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//             //                 NSLog(@"JSON: %@", responseObject);
+//             //             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//             //                 NSLog(@"Error: %@", error);
+//             //             }];
+//             //       [MBProgressHUD hideHUDForView:self.view animated:YES];
+//             //       _willGo = YES;
+//             //       [self performSegueWithIdentifier:@"showDashboard" sender:nil];
+//    
+//             dispatch_group_leave(group);
+//           } else {
+//             NSLog(@"%@", error);
+//    
+//             //[self getFriends];
+//               dispatch_group_leave(group);
+//    
+//            // [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    
+//             //[self tryAgain];
+//    
+//           }
+//         }];
     
     
     
-    //  dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+//      dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     
     [CrashlyticsKit setObjectValue:@"waiting for group notify" forKey:@"debugData"];
     
@@ -505,8 +505,10 @@
     CLS_LOG(@"%@", allFriends);
     
     [CrashlyticsKit setObjectValue:allFriends forKey:@"finalFriends"];
+    if(allFriends != NULL) {
+        set.friends = allFriends;
+    }
     
-    set.friends = allFriends;
     dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         _willGo = YES;
