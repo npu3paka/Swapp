@@ -22,8 +22,6 @@
     //Array with names of the images already used
     NSMutableArray *usedImageList;
     NSArray *ownImagesList;
-    //Here we store the name and path of every image, that can be used
-    NSMutableDictionary *dicWithImages;
 }
 
 #pragma mark - Class Methods
@@ -54,10 +52,6 @@ static NSString *const kFriendKey = @"FBfriends";
     return closefriendsList;
 }
 
-- (NSDictionary *) dicImages {
-    return dicWithImages;
-}
-
 - (NSArray *)images {
     return imagesList;
 }
@@ -67,7 +61,6 @@ static NSString *const kFriendKey = @"FBfriends";
     //        imagesList = [NSMutableArray new];
     //    }
     NSMutableArray *privateImagesList = [NSMutableArray new];
-    dicWithImages = [NSMutableDictionary new];
     NSMutableArray *arrayWithNames = [NSMutableArray new];
     NSLog(@"images to be added:\n %@", imagList);
     NSLog(@"already used images: \n %@", usedImageList);
@@ -90,7 +83,7 @@ static NSString *const kFriendKey = @"FBfriends";
             if (![usedImageList containsObject:filename]) {
 //                [dicWithImages setObject:path forKey:filename];
                 
-                [privateImagesList addObject:filename];
+                [privateImagesList addObject:asset];
             }
         }
     }
@@ -116,18 +109,19 @@ static NSString *const kFriendKey = @"FBfriends";
     
     NSLog(@"before: \n %@", privateImagesList);
     if(privateImagesList.count != 0) {
-        NSLog(@"after shuffle: \n %@", [self shuffle:privateImagesList]);
         imagesList = [NSMutableArray arrayWithArray:[self shuffle:privateImagesList]];
     }
 }
 
-- (void) setImageAsUsed: (NSString *) name {
+- (void) setImageAsUsed: (PHAsset *) asset {
     
-    NSLog(@"image name that will be added as used: %@", name);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [usedImageList addObject:name];
-    [defaults setObject:usedImageList forKey:@"ownImages"];
-    [defaults synchronize];
+    CLS_LOG(@"image name that will be added as used: %@", asset.localIdentifier);
+    if(![asset.localIdentifier isEqual:[NSNull null]]) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [usedImageList addObject:asset.localIdentifier];
+        [defaults setObject:usedImageList forKey:@"ownImages"];
+        [defaults synchronize];
+    }
     
 }
 

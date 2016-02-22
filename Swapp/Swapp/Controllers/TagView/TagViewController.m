@@ -26,7 +26,12 @@
     
     [imageView setBackgroundColor:[UIColor darkGrayColor]];
     
-    [imageView anchorCenterLeftWithLeftPadding:0 width:self.view.width height: (self.view.width / self.image.size.width) * self.image.size.height];
+    CGFloat height = (self.view.width / self.image.size.width) * self.image.size.height;
+    if(height+140 > self.view.frame.size.height) {
+        height = self.view.frame.size.height-140;
+    }
+    
+    [imageView anchorCenterLeftWithLeftPadding:0 width:self.view.width height: height];
     
     [self drawView];
 }

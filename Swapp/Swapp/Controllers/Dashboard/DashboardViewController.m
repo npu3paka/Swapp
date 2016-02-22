@@ -397,7 +397,11 @@
             if (touchedView.tag == 2) {
                 SentTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
             }
-            [self drawView];
+            BOOL author = YES;
+            if( touchedView.tag == 1) {
+                author = NO;
+            }
+            [self drawView: author];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -409,7 +413,7 @@
     //  }
 }
 
-- (void) drawView {
+- (void) drawView:(BOOL) author {
     int y = 0;
     int br = 0;
     
@@ -434,7 +438,7 @@
         
         BoardTag *tagViewButton = [[BoardTag alloc]init];
         tagViewButton.swappId = imag[@"s_swapp_tag_id"];
-        if ([imag[@"s_can_see"]  isEqual: @"1"]) {
+        if ([imag[@"s_can_see"]  isEqual: @"1"] || author) {
             
             tagViewButton.canSee = true;
         } else {
@@ -463,6 +467,8 @@
         
         if(tagViewButton.canSee || taggedUsers) {
             [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
+        } else {
+            [tagViewButton setImage:[UIImage imageNamed:@"Lock Filled-500"] forState:UIControlStateNormal];
         }
         [tagViewButton.imageView setContentMode:UIViewContentModeScaleToFill];
         
@@ -600,7 +606,7 @@
             
             settings.ownImages = arr;
             
-            [self drawView];
+            [self drawView:NO];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -615,8 +621,15 @@
     PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
     
     [settings addNewImages:allPhotos];
-    [self performSegueWithIdentifier:@"addTag" sender:nil];
-
+    if(settings.images.count>0) {
+        [self performSegueWithIdentifier:@"addTag" sender:nil];
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"Something went wrong. Please try again later!"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+    }
     
 //    NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
 //    
@@ -677,14 +690,16 @@
         [self getAllPictures];
 
     } else {
-        TagViewController *vc = [TagViewController new];
-        
-        [vc.view setBackgroundColor:[UIColor blackColor]];
-        
-        vc.image = sender.imageView.image;
-        vc.imageId = sender.swappId;
-        
-        [self presentViewController:vc animated:YES completion:nil];
+        if (sender.imageView.image) {
+            TagViewController *vc = [TagViewController new];
+            
+            [vc.view setBackgroundColor:[UIColor blackColor]];
+            
+            vc.image = sender.imageView.image;
+            vc.imageId = sender.swappId;
+            
+            [self presentViewController:vc animated:YES completion:nil];
+        }
     }
 }
 

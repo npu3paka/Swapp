@@ -177,183 +177,185 @@
     
     
     
-    //    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture,friends.limit(5000){name,id,picture},taggable_friends.limit(5000){name,id,picture}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-    //        [CrashlyticsKit setObjectValue:@"request delivered" forKey:@"debugData"];
-    //        [CrashlyticsKit setObjectValue:error forKey:@"error"];
-    //
-    //        CLS_LOG(@"/me results: %@", result);
-    //
-    //        if (!error) {
-    //            NSDictionary *dic = @{
-    //                                  @"userId":result[@"id"],
-    //                                  @"name":result[@"name"],
-    //                                  @"imageUrl": result[@"picture"][@"data"][@"url"],
-    //                                  @"normal": @"1"
-    //                                  };
-    //            CLS_LOG(@"/me dic results: %@", dic);
-    //            CLS_LOG(@"The name: ");
-    //            CLS_LOG(@"%@", dic[@"userId"]);
-    //            [CrashlyticsKit setUserIdentifier:dic[@"userId"]];
-    //            [CrashlyticsKit setUserName:dic[@"name"]];
-    //
-    //            CLS_LOG(@"The name: ");
-    //            CLS_LOG(@"%@", dic[@"name"]);
-    //
-    //            [CrashlyticsKit setObjectValue:result forKey:@"result"];
-    //
-    //            set.current_user = [[User alloc] initWithProperties:dic];
-    //            [CrashlyticsKit setObjectValue:@"set current user" forKey:@"debugData"];
-    //
-    //            CLS_LOG(@"set current user");
-    //            CLS_LOG(@"%@", set.current_user);
-    //
-    //            m_friends = result[@"friends"][@"data"];
-    //            CLS_LOG(@"m_friends %@", m_friends);
-    //            [CrashlyticsKit setObjectValue:@"get friends data" forKey:@"debugData"];
-    //
-    //            NSMutableArray *allCloseFriends = [[NSMutableArray alloc]init];
-    //
-    //            [CrashlyticsKit setObjectValue:m_friends forKey:@"m_friends"];
-    //
-    //
-    //            for (NSDictionary *user in m_friends) {
-    //                NSDictionary *dic = @{
-    //                                      @"userId":user[@"id"],
-    //                                      @"name":user[@"name"],
-    //                                      @"imageUrl": user[@"picture"][@"data"][@"url"],
-    //                                      @"normal": @"1"
-    //                                      };
-    //
-    //                User *user = [[User alloc] initWithProperties:dic];
-    //                [allCloseFriends addObject:user];
-    //            }
-    //
-    //            CLS_LOG(@"all close friends: ");
-    //            CLS_LOG(@"%@", allCloseFriends);
-    //
-    //            [CrashlyticsKit setObjectValue:@"m_friends ready" forKey:@"debugData"];
-    //
-    //
-    //            [CrashlyticsKit setObjectValue:allCloseFriends forKey:@"allCloseFriends"];
-    //
-    //            set.closefriends = allCloseFriends;
-    //            [CrashlyticsKit setObjectValue:@"set all close friends" forKey:@"debugData"];
-    //
-    //            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    //            NSDictionary *parameters = @{@"facebook_id": dic[@"userId"],
-    //                                         @"name": dic[@"name"],
-    //                                         @"profile_image": dic[@"imageUrl"]};
-    //
-    //            [CrashlyticsKit setObjectValue:@"request for create fb user" forKey:@"debugData"];
-    //
-    //            CLS_LOG(@"parameters: ");
-    //            CLS_LOG(@"%@", parameters);
-    //
-    //            [manager POST:@"http://alti.risunka.bg/backend_dev.php/create_facebook_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    //                NSLog(@"JSON: %@", responseObject);
-    //                CLS_LOG(@"JSON results: ");
-    //                CLS_LOG(@"%@", responseObject);
-    //                [CrashlyticsKit setObjectValue:@"fb user request delivered" forKey:@"debugData"];
-    //
-    //                [CrashlyticsKit setObjectValue:responseObject forKey:@"fbData"];
-    //
-    //                if([[NSString stringWithFormat:@"%@", responseObject[@"success"]]  isEqual: @"0"]) {
-    //                    set.current_user.newReg = false;
-    //                } else {
-    //                    set.current_user.newReg = true;
-    //                }
-    //                //TODO: Check For New Registration
-    //                //                 _newRegistration = NO;
-    //
-    //            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    //                NSLog(@"Error: %@", error);
-    //            }];
-    //
-    //            [CrashlyticsKit setObjectValue:@"set taggable_friends" forKey:@"debugData"];
-    //
-    //            m_taggable_friends = result[@"taggable_friends"][@"data"];
-    //
-    //            CLS_LOG(@"all m_taggable_friends: ");
-    //            CLS_LOG(@"%@", m_taggable_friends);
-    //
-    //            [CrashlyticsKit setObjectValue:m_taggable_friends forKey:@"m_taggable_friends"];
-    //
-    //            HUD.labelText = @"Fetching Friends ...";
-    //
-    //            [CrashlyticsKit setObjectValue:@"leaving the group" forKey:@"debugData"];
-    //
-    //            dispatch_group_leave(group);
-    //        } else {
-    //            dispatch_group_leave(group);
-    //        }
-    //
-    //    }];
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture,friends.limit(5000){name,id,picture},taggable_friends.limit(5000){name,id,picture}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+            [CrashlyticsKit setObjectValue:@"request delivered" forKey:@"debugData"];
+            [CrashlyticsKit setObjectValue:error forKey:@"error"];
     
+            CLS_LOG(@"/me results: %@", result);
     
-    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture,friends.limit(5000){name,id,picture}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            NSDictionary *dic = @{
-                                  @"userId":result[@"id"],
-                                  @"name":result[@"name"],
-                                  @"imageUrl": result[@"picture"][@"data"][@"url"],
-                                  @"normal": @"1"
-                                  };
-            
-            set.current_user = [[User alloc] initWithProperties:dic];
-            m_friends = result[@"friends"][@"data"];
-            
-            NSMutableArray *allCloseFriends = [[NSMutableArray alloc]init];
-            
-            for (NSDictionary *user in m_friends) {
+            if (!error) {
                 NSDictionary *dic = @{
-                                      @"userId":user[@"id"],
-                                      @"name":user[@"name"],
-                                      @"imageUrl": user[@"picture"][@"data"][@"url"],
+                                      @"userId":result[@"id"],
+                                      @"name":result[@"name"],
+                                      @"imageUrl": result[@"picture"][@"data"][@"url"],
                                       @"normal": @"1"
                                       };
+                CLS_LOG(@"/me dic results: %@", dic);
+                CLS_LOG(@"The name: ");
+                CLS_LOG(@"%@", dic[@"userId"]);
+                [CrashlyticsKit setUserIdentifier:dic[@"userId"]];
+                [CrashlyticsKit setUserName:dic[@"name"]];
+    
+                CLS_LOG(@"The name: ");
+                CLS_LOG(@"%@", dic[@"name"]);
+    
+                [CrashlyticsKit setObjectValue:result forKey:@"result"];
+    
+                set.current_user = [[User alloc] initWithProperties:dic];
+                [CrashlyticsKit setObjectValue:@"set current user" forKey:@"debugData"];
+    
+                CLS_LOG(@"set current user");
+                CLS_LOG(@"%@", set.current_user);
+    
+                m_friends = result[@"friends"][@"data"];
+                CLS_LOG(@"m_friends %@", m_friends);
+                [CrashlyticsKit setObjectValue:@"get friends data" forKey:@"debugData"];
+    
+                NSMutableArray *allCloseFriends = [[NSMutableArray alloc]init];
+    
+                [CrashlyticsKit setObjectValue:m_friends forKey:@"m_friends"];
+    
+    
+                for (NSDictionary *user in m_friends) {
+                    if(user[@"id"]!= nil && user[@"name"] != nil && user[@"picture"][@"data"][@"url"] != nil) {
+                        NSDictionary *dic = @{
+                                              @"userId":user[@"id"],
+                                              @"name":user[@"name"],
+                                              @"imageUrl": user[@"picture"][@"data"][@"url"],
+                                              @"normal": @"1"
+                                              };
+        
+                        User *user = [[User alloc] initWithProperties:dic];
+                        [allCloseFriends addObject:user];
+                    }
+                }
+    
+                CLS_LOG(@"all close friends: ");
+                CLS_LOG(@"%@", allCloseFriends);
+    
+                [CrashlyticsKit setObjectValue:@"m_friends ready" forKey:@"debugData"];
+    
+    
+                [CrashlyticsKit setObjectValue:allCloseFriends forKey:@"allCloseFriends"];
+    
+                set.closefriends = allCloseFriends;
+                [CrashlyticsKit setObjectValue:@"set all close friends" forKey:@"debugData"];
+    
+                AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                NSDictionary *parameters = @{@"facebook_id": dic[@"userId"],
+                                             @"name": dic[@"name"],
+                                             @"profile_image": dic[@"imageUrl"]};
+    
+                [CrashlyticsKit setObjectValue:@"request for create fb user" forKey:@"debugData"];
+    
+                CLS_LOG(@"parameters: ");
+                CLS_LOG(@"%@", parameters);
+    
+                [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/create_facebook_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"JSON: %@", responseObject);
+                    CLS_LOG(@"JSON results: ");
+                    CLS_LOG(@"%@", responseObject);
+                    [CrashlyticsKit setObjectValue:@"fb user request delivered" forKey:@"debugData"];
+    
+                    [CrashlyticsKit setObjectValue:responseObject forKey:@"fbData"];
+    
+                    if([[NSString stringWithFormat:@"%@", responseObject[@"success"]]  isEqual: @"0"]) {
+                        set.current_user.newReg = false;
+                    } else {
+                        set.current_user.newReg = true;
+                    }
+                    //TODO: Check For New Registration
+                    //                 _newRegistration = NO;
+    
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    NSLog(@"Error: %@", error);
+                }];
+    
+                [CrashlyticsKit setObjectValue:@"set taggable_friends" forKey:@"debugData"];
+                if (result[@"taggable_friends"][@"data"] != nil) {
+                    m_taggable_friends = result[@"taggable_friends"][@"data"];
+                }
                 
-                User *user = [[User alloc] initWithProperties:dic];
-                [allCloseFriends addObject:user];
+                CLS_LOG(@"all m_taggable_friends: ");
+                CLS_LOG(@"%@", m_taggable_friends);
+    
+                [CrashlyticsKit setObjectValue:m_taggable_friends forKey:@"m_taggable_friends"];
+    
+                HUD.labelText = @"Fetching Friends ...";
+    
+                [CrashlyticsKit setObjectValue:@"leaving the group" forKey:@"debugData"];
+    
+            } else {
             }
             
-            CLS_LOG(@"/me dic results: %@", dic);
-            CLS_LOG(@"The name: ");
-            CLS_LOG(@"%@", dic[@"userId"]);
-            [CrashlyticsKit setUserIdentifier:dic[@"userId"]];
-            [CrashlyticsKit setUserName:dic[@"name"]];
-            
-            CLS_LOG(@"The name: ");
-            CLS_LOG(@"%@", dic[@"name"]);
-            
-            set.closefriends = allCloseFriends;
-            
-            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-            NSDictionary *parameters = @{@"facebook_id": dic[@"userId"],
-                                         @"name": dic[@"name"],
-                                         @"profile_image": dic[@"imageUrl"]};
-            
-            [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/create_facebook_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"JSON: %@", responseObject);
-                
-                if([[NSString stringWithFormat:@"%@", responseObject[@"success"]]  isEqual: @"0"]) {
-                    set.current_user.newReg = false;
-                } else {
-                    set.current_user.newReg = true;
-                }
-                //TODO: Check For New Registration
-                //                 _newRegistration = NO;
-                
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-            }];
-            
             dispatch_group_leave(group);
-        } else {
-            dispatch_group_leave(group);
-        }
-        
-    }];
+        }];
     
+//    
+//    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture,friends.limit(5000){name,id,picture}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//        if (!error) {
+//            NSDictionary *dic = @{
+//                                  @"userId":result[@"id"],
+//                                  @"name":result[@"name"],
+//                                  @"imageUrl": result[@"picture"][@"data"][@"url"],
+//                                  @"normal": @"1"
+//                                  };
+//            
+//            set.current_user = [[User alloc] initWithProperties:dic];
+//            m_friends = result[@"friends"][@"data"];
+//            
+//            NSMutableArray *allCloseFriends = [[NSMutableArray alloc]init];
+//            
+//            for (NSDictionary *user in m_friends) {
+//                NSDictionary *dic = @{
+//                                      @"userId":user[@"id"],
+//                                      @"name":user[@"name"],
+//                                      @"imageUrl": user[@"picture"][@"data"][@"url"],
+//                                      @"normal": @"1"
+//                                      };
+//                
+//                User *user = [[User alloc] initWithProperties:dic];
+//                [allCloseFriends addObject:user];
+//            }
+//            
+//            CLS_LOG(@"/me dic results: %@", dic);
+//            CLS_LOG(@"The name: ");
+//            CLS_LOG(@"%@", dic[@"userId"]);
+//            [CrashlyticsKit setUserIdentifier:dic[@"userId"]];
+//            [CrashlyticsKit setUserName:dic[@"name"]];
+//            
+//            CLS_LOG(@"The name: ");
+//            CLS_LOG(@"%@", dic[@"name"]);
+//            
+//            set.closefriends = allCloseFriends;
+//            
+//            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//            NSDictionary *parameters = @{@"facebook_id": dic[@"userId"],
+//                                         @"name": dic[@"name"],
+//                                         @"profile_image": dic[@"imageUrl"]};
+//            
+//            [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/create_facebook_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                NSLog(@"JSON: %@", responseObject);
+//                
+//                if([[NSString stringWithFormat:@"%@", responseObject[@"success"]]  isEqual: @"0"]) {
+//                    set.current_user.newReg = false;
+//                } else {
+//                    set.current_user.newReg = true;
+//                }
+//                //TODO: Check For New Registration
+//                //                 _newRegistration = NO;
+//                
+//            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                NSLog(@"Error: %@", error);
+//            }];
+//            
+//            dispatch_group_leave(group);
+//        } else {
+//            dispatch_group_leave(group);
+//        }
+//        
+//    }];
+//    
 //      dispatch_group_enter(group);
 //    
 //        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/taggable_friends" parameters:@{@"fields":@"id, name, picture", @"limit": @"5000"}]
@@ -435,7 +437,7 @@
         
         [self connectFriends];
     });
-    //  dispatch_release(group);
+//      dispatch_release(group);
     
 }
 
@@ -446,26 +448,25 @@
     NSMutableArray *ar = [[NSMutableArray alloc]init];
     [CrashlyticsKit setObjectValue:@"start merging" forKey:@"debugData"];
     if(m_taggable_friends) {
+        
+//        int b1 = 0;
+//        int b2 = 0;
+        
         for (NSDictionary *user in m_taggable_friends) {
             BOOL found = false;
+//            b1++;
             for (NSDictionary *closeFriend in m_friends) {
+//                b2++;
+               
+//                HUD.labelText =[NSString stringWithFormat:@"Fetching %d %d", b1, b2];
                 
-                [CrashlyticsKit setObjectValue:@{
-                                                 @"taggableUser": user,
-                                                 @"mUser": closeFriend
-                                                 } forKey:@"mergingData"];
-                
-                CLS_LOG(@"in for mergin data: ");
-                CLS_LOG(@"%@", @{
-                                 @"taggableUser": user,
-                                 @"mUser": closeFriend
-                                 } );
-                
-                if([user[@"name"] isEqualToString:closeFriend[@"name"]] && [user[@"picture"][@"data"][@"url"] isEqualToString:closeFriend[@"picture"][@"data"][@"url"] ]) {
-                    NSMutableDictionary *mutClose = [[NSMutableDictionary alloc] initWithDictionary:closeFriend];
-                    [mutClose setValue:@"1" forKey:@"normal"];
-                    [ar addObject:mutClose];
-                    found = true;
+                if (user[@"name"] && user[@"picture"][@"data"][@"url"] && closeFriend[@"picture"][@"data"][@"url"] && closeFriend[@"name"]) {
+                    if([user[@"name"] isEqualToString:closeFriend[@"name"]] && [user[@"picture"][@"data"][@"url"] isEqualToString:closeFriend[@"picture"][@"data"][@"url"] ]) {
+                        NSMutableDictionary *mutClose = [[NSMutableDictionary alloc] initWithDictionary:closeFriend];
+                        [mutClose setValue:@"1" forKey:@"normal"];
+                        [ar addObject:mutClose];
+                        found = true;
+                    }
                 }
             }
             if(!found) {
@@ -482,6 +483,8 @@
         }
     }
     
+    HUD.labelText = @"Finishing...";
+    
     [CrashlyticsKit setObjectValue:ar forKey:@"mergedFriendsTemp"];
     
     
@@ -489,7 +492,11 @@
     CLS_LOG(@"%@", ar);
     
     NSMutableArray *allFriends = [[NSMutableArray alloc]init];
+    int b1 = 0;
     for (NSDictionary *user in ar) {
+        b1++;
+        HUD.labelText =[NSString stringWithFormat:@"Finishing!! %d", b1];
+        if (user[@"id"] && user[@"name"] && user[@"picture"][@"data"][@"url"] &&user[@"normal"]) {
         NSDictionary *dic = @{
                               @"userId":user[@"id"],
                               @"name":user[@"name"],
@@ -499,6 +506,7 @@
         
         User *user = [[User alloc] initWithProperties:dic];
         [allFriends addObject:user];
+        }
     }
     
     CLS_LOG(@"The allFriends: ");

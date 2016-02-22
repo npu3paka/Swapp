@@ -176,8 +176,9 @@ static int imageWidth = 40;
 }
 
 - (void) showHideButtons {
-    headerView.hidden = !showButtons;
-    bottomView.hidden = !showButtons;
+    headerView.hidden = NO;
+//    headerView.hidden = !showButtons;
+//    bottomView.hidden = !showButtons;
 }
 
 - (void)didRecognizeSingleTap:(id)sender
@@ -299,51 +300,80 @@ static int imageWidth = 40;
     }
     NSURL *aURL;
     if(settings.images.count!=0) {
-        NSURL *aURL = [[NSURL alloc] initWithString: settings.dicImages[settings.images[shownpic]]];
+        PHAsset *assert = settings.images[shownpic];
+        
+        [[PHImageManager defaultManager] requestImageForAsset:assert targetSize:self.view.frame.size contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            
+            float minDimension = MIN(result.size.width, result.size.height);
+                     float screenWidth = self.view.bounds.size.width;
+            
+             UIImage *newImage;
+    
+             if(minDimension > screenWidth) {
+                 CGFloat scaleFactor = minDimension / screenWidth;
+    
+                 UIGraphicsBeginImageContext(CGSizeMake(result.size.width/scaleFactor, result.size.height/scaleFactor));
+                 [result drawInRect:CGRectMake(0, 0, result.size.width/scaleFactor, result.size.height/scaleFactor)];
+                 newImage = UIGraphicsGetImageFromCurrentImageContext();
+                 UIGraphicsEndImageContext();
+    
+             } else {
+                 newImage = result;
+             }
+             
+             CGFloat specialHeight =  newImage.size.height;
+             if(specialHeight > self.view.height-140) {
+                 specialHeight = self.view.height-140;
+             }
+            [imageView setImage:result];
+            [imageView anchorCenterLeftWithLeftPadding:0 width:self.view.frame.size.width height:specialHeight];
+
+        }];
+//        NSURL *aURL = [[NSURL alloc] initWithString: settings.dicImages[settings.images[shownpic]]];
     
     currentImageName = aURL;
-    library = [[ALAssetsLibrary alloc] init];
-    [library assetForURL:aURL resultBlock:^(ALAsset *asset)
-     {
-         UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1 orientation:UIImageOrientationUp];
-
-         
-         float minDimension = MIN(copyOfOriginalImage.size.width, copyOfOriginalImage.size.height);
-         float screenWidth = self.view.bounds.size.width;
-         
-         UIImage *newImage;
-         
-         if(minDimension > screenWidth) {
-             CGFloat scaleFactor = minDimension / screenWidth;
-             
-             UIGraphicsBeginImageContext(CGSizeMake(copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
-             [copyOfOriginalImage drawInRect:CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor)];
-             newImage = UIGraphicsGetImageFromCurrentImageContext();
-             UIGraphicsEndImageContext();
-             
-             
-//             CGContextRef ctx = UIGraphicsGetCurrentContext();
+//    library = [[ALAssetsLibrary alloc] init];
+//    [library assetForURL:aURL resultBlock:^(ALAsset *asset)
+//     {
+//         UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1 orientation:UIImageOrientationUp];
+//
+//         
+//         float minDimension = MIN(copyOfOriginalImage.size.width, copyOfOriginalImage.size.height);
+//         float screenWidth = self.view.bounds.size.width;
+//         
+//         UIImage *newImage;
+//         
+//         if(minDimension > screenWidth) {
+//             CGFloat scaleFactor = minDimension / screenWidth;
 //             
-//             //fill your custom view with a blue rect
-//             CGContextFillRect(ctx, CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
-             
-         } else {
-             newImage = copyOfOriginalImage;
-         }
-         
-         CGFloat specialHeight =  newImage.size.height;
-         if(specialHeight > self.view.height-140) {
-             specialHeight = self.view.height-140;
-         }
-         [imageView anchorCenterLeftWithLeftPadding:0 width:newImage.size.width height:specialHeight];
-         [imageView setImage:newImage];
-         
-     }
-            failureBlock:^(NSError *error)
-     {
-         // error handling
-         NSLog(@"failure-----");
-     }];
+//             UIGraphicsBeginImageContext(CGSizeMake(copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
+//             [copyOfOriginalImage drawInRect:CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor)];
+//             newImage = UIGraphicsGetImageFromCurrentImageContext();
+//             UIGraphicsEndImageContext();
+//             
+//             
+////             CGContextRef ctx = UIGraphicsGetCurrentContext();
+////             
+////             //fill your custom view with a blue rect
+////             CGContextFillRect(ctx, CGRectMake(0, 0, copyOfOriginalImage.size.width/scaleFactor, copyOfOriginalImage.size.height/scaleFactor));
+//             
+//         } else {
+//             newImage = copyOfOriginalImage;
+//         }
+//         
+//         CGFloat specialHeight =  newImage.size.height;
+//         if(specialHeight > self.view.height-140) {
+//             specialHeight = self.view.height-140;
+//         }
+//         [imageView anchorCenterLeftWithLeftPadding:0 width:newImage.size.width height:specialHeight];
+//         [imageView setImage:newImage];
+//         
+//     }
+//            failureBlock:^(NSError *error)
+//     {
+//         // error handling
+//         NSLog(@"failure-----");
+//     }];
     } else {
         
     }
