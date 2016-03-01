@@ -14,30 +14,53 @@
 
 @interface TagViewController () <UIActionSheetDelegate>
 
+@property (nonatomic, strong) UIImageView *imageView;
 @end
 
 @implementation TagViewController
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];
-    [self.view addSubview:imageView];
     
-    [imageView setBackgroundColor:[UIColor darkGrayColor]];
-    
-    CGFloat height = (self.view.width / self.image.size.width) * self.image.size.height;
-    if(height+140 > self.view.frame.size.height) {
-        height = self.view.frame.size.height-140;
+    _imageView = [[UIImageView alloc] init];
+    //initWithImage:self.image];
+    [self.view addSubview:_imageView];
+    if(self.image) {
+        [_imageView setImage:self.image];
+        [_imageView setBackgroundColor:[UIColor darkGrayColor]];
+        
+        CGFloat height = (self.view.width / self.image.size.width) * self.image.size.height;
+        if(height+140 > self.view.frame.size.height) {
+            height = self.view.frame.size.height-140;
+        }
+        
+        [_imageView anchorCenterLeftWithLeftPadding:0 width:self.view.width height: height];
+        
+        
+    } else {
+        [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.imageURL] placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nonnull response, UIImage * _Nonnull image) {
+            [_imageView setImage:image];
+            [_imageView setBackgroundColor:[UIColor darkGrayColor]];
+            
+            CGFloat height = (self.view.width / image.size.width) * image.size.height;
+            if(height+140 > self.view.frame.size.height) {
+                height = self.view.frame.size.height-140;
+            }
+            
+            [_imageView anchorCenterLeftWithLeftPadding:0 width:self.view.width height: height];
+            
+        } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nonnull response, NSError * _Nonnull error) {
+            [self goBack];
+        }];
     }
     
-    [imageView anchorCenterLeftWithLeftPadding:0 width:self.view.width height: height];
-    
     [self drawView];
+    
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
     
     
     // Do any additional setup after loading the view.

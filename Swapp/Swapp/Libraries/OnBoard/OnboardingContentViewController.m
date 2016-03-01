@@ -56,8 +56,8 @@ static CGFloat const kMainPageControlHeight = 35;
     
     // default icon properties
     if(_image) {
-		self.iconHeight = _image.size.height;
-		self.iconWidth = _image.size.width;
+		self.iconHeight = 300;
+		self.iconWidth = 300;
 	}
     
     else {

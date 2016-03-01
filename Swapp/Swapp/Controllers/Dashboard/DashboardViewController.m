@@ -96,7 +96,6 @@
     
     [self getUser];
     
-    [self downloadImages];
     [self.view bringSubviewToFront:imagesScrollView];
     // Do any additional setup after loading the view.
 }
@@ -107,6 +106,21 @@
     
     if (settings.current_user.newReg) {
         [self openTagView];
+    }
+    
+    if(settings.selectedImageId != nil) {
+        TagViewController *vc = [TagViewController new];
+        
+        [vc.view setBackgroundColor:[UIColor blackColor]];
+        
+        vc.imageURL = settings.selectedImageUrl;
+        vc.imageId = settings.selectedImageId;
+        
+        settings.selectedImageId = nil;
+        
+        [self presentViewController:vc animated:NO completion:nil];
+    } else {
+        [self downloadImages];
     }
     
 //    [self drawView];
@@ -326,27 +340,6 @@
     
     SentTags.frame = CGRectMake(0, Swapp2.yMax, rightBox.width, rightBox.height/2);
     
-    
-    //  [headerView groupHorizontally:@[leftBox,centerBox,rightBox] centeredUnderView:nameLabel topPadding:10 spacing:10 width:Width height:40];
-    //
-    //  [Swapp1 anchorBottomLeftWithLeftPadding:-2 bottomPadding:0 width:100 height:50];
-    //
-    //  [Swapp1 alignUnder:nameLabel matchingLeftWithTopPadding:10 width:100 height:50];
-    //
-    //  [add alignUnder:nameLabel matchingCenterWithTopPadding:10 width:50 height:50];
-    //
-    //  [Swapp2 alignUnder:nameLabel matchingRightWithTopPadding:10 width:100 height:50];
-    //
-    ////  [Swapp1 alignUnder:nameLabel matchingLeftWithTopPadding:10 width:100 height:50];
-    //
-    ////    [headerView groupHorizontally:@[Swapp1,add,Swapp2] centeredUnderView:nameLabel topPadding:10 spacing:10 width:Width height:40];
-    //
-    //    [ResTags alignUnder:Swapp1 matchingCenterWithTopPadding:7 width:Width height:13];
-    //
-    //    [SentTags alignUnder:Swapp2 matchingCenterWithTopPadding:7 width:Width height:13];
-    //
-    
-    
     [self.view bringSubviewToFront:sideMenu];
     
     backgrVi = [UIView new];
@@ -464,6 +457,8 @@
         
         //ALAsset* asset = settings.images[shownpic];
         NSURL *aURL =  [NSURL URLWithString:[NSString stringWithFormat:@"http://alti.xn----8sbarabrujldb2bdye.eu/uploads/%@",imag[@"s_image_source"]]];
+        
+        tagViewButton.swappUrl = aURL;
         
         if(tagViewButton.canSee || taggedUsers) {
             [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
@@ -687,19 +682,21 @@
     if(!sender.canSee) {
         isUnclogking = true;
         unlockingId = sender.swappId;
+        settings.selectedImageUrl = sender.swappUrl;
+        settings.selectedImageId = sender.swappId;
         [self getAllPictures];
 
     } else {
-        if (sender.imageView.image) {
             TagViewController *vc = [TagViewController new];
             
             [vc.view setBackgroundColor:[UIColor blackColor]];
             
             vc.image = sender.imageView.image;
+            vc.imageURL = sender.swappUrl;
             vc.imageId = sender.swappId;
             
             [self presentViewController:vc animated:YES completion:nil];
-        }
+        
     }
 }
 

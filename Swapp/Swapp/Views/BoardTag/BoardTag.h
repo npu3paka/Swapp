@@ -14,6 +14,8 @@
 @property (nonatomic, assign) CGRect fr;
 @property (nonatomic, assign) CGFloat radius;
 @property (nonatomic, strong) NSString *swappId;
+@property (nonatomic, strong) NSURL *swappUrl;
+
 
 
 @end

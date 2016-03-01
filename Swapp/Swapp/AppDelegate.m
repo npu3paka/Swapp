@@ -101,11 +101,11 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 
 - (OnboardingViewController *)generateFirstDemoVC {
-    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:@"Swapps" body:@"Collect your moments." image:[UIImage imageNamed:@"blue"] buttonText:@"" action:^{
+    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:@"Swapps" body:@"Collect your moments." image:[UIImage imageNamed:@"press"] buttonText:@"" action:^{
         [[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     }];
     
-    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"" body:@"Tag your friends to unlock pictures of you." image:[UIImage imageNamed:@"red"] buttonText:@"" action:^{
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"" body:@"Tag your friends to unlock pictures of you." image:[UIImage imageNamed:@"Face"] buttonText:@"" action:^{
         [[[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }];
     secondPage.movesToNextViewController = YES;
@@ -113,7 +113,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 //        [[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"You've arrived on the second page, and this alert was displayed from within the page's viewDidAppearBlock." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 //    };
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"The more friends you tag,the more friends tag you!" body:@"" image:[UIImage imageNamed:@"yellow"] buttonText:@"Get Started" action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"The more friends you tag,the more friends tag you!" body:@"" image:[UIImage imageNamed:@"Names"] buttonText:@"Get Started" action:^{
         [self handleOnboardingCompletion];
     }];
     

@@ -21,6 +21,10 @@
 //@property (nonatomic, assign) NSDictionary *dicImages;
 @property (nonatomic, assign) NSArray *ownImages;
 
+@property (nonatomic, strong) NSString *selectedImageId;
+@property (nonatomic, assign) NSURL *selectedImageUrl;
+
+
 - (void) addNewImages:(PHFetchResult *) imagList;
 - (void) setImageAsUsed: (PHAsset *) asset;
 

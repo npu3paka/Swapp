@@ -11,5 +11,6 @@
 @interface TagViewController : BaseViewController
 
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, strong) NSString *imageId;
 @end
