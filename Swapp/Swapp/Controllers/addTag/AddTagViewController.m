@@ -166,6 +166,7 @@ static int imageWidth = 40;
 }
 
 - (void) backToMain {
+    settings.selectedImageId = nil;
     [self performSegueWithIdentifier:@"showDashboard" sender:nil];
 }
 
@@ -575,7 +576,7 @@ static int imageWidth = 40;
         
         
         [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/tag" parameters:dictionary success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"JSON: %@", responseObject);
+            NSLog(@"JSON from sent image: %@", responseObject);
             
             //        [fetchedImages addObject:dic];
             ;

@@ -22,10 +22,10 @@
 #import "AddTagViewController.h"
 #import "CustomSheet.h"
 //#import <Answers/Answers.h>
-
+#import "Swapps-Swift.h"
 @import Photos;
 
-@interface DashboardViewController () <FBSDKLoginButtonDelegate, UIActionSheetDelegate> {
+@interface DashboardViewController () <FBSDKLoginButtonDelegate, UIActionSheetDelegate, DashboardColDelegate> {
 //    ALAssetsLibrary *library;
     Settings *settings;
     
@@ -40,7 +40,7 @@
     UIView *imagesView;
     
     UIScrollView *imagesScrollView;
-    UIView *imagesColView;
+    DashboardCollection *imagesColView;
     UIView *sideMenu;
     
     BOOL sideMenuIsOpen;
@@ -65,6 +65,10 @@
     NSString *unlockingId;
     
     BOOL isLoaded;
+    BOOL loaded;
+    
+    NSString *swCount;
+    NSString *swTags;
 }
 
 @end
@@ -75,31 +79,43 @@
     [super viewDidLoad];
     taggedUsers = false;
     isUnclogking = false;
+    loaded = false;
+    [self loadHeaderView];
+
+//    imagesColView = [[DashboardCollection alloc] init];
+//    
+//    [self.view addSubview:imagesColView];
+//    
+//    [imagesColView fillSuperview];
+//    
+//    imagesColView.backgroundColor = [UIColor clearColor];
+//    imagesColView.dashboardDelegate = self;
+//    imagesColView.extensionUrl = @"get_user_tags";
+//    imagesColView.chosenLink = 1;
     
-    oneBigView = [[UIView alloc] init];
-    imagesScrollView = [[UIScrollView alloc] init];
-    [self.view addSubview:imagesScrollView];
-    [imagesScrollView fillSuperview];
-    [imagesScrollView addSubview:oneBigView];
-    [oneBigView fillSuperview];
-    
-    maxPerLine = 3;
+//
+//    oneBigView = [[UIView alloc] init];
+//    imagesScrollView = [[UIScrollView alloc] init];
+//    [self.view addSubview:imagesScrollView];
+//    [imagesScrollView fillSuperview];
+//    [imagesScrollView addSubview:oneBigView];
+//    [oneBigView fillSuperview];
+//    
+//    maxPerLine = 3;
     settings = [Settings sharedInstance];
     
     CLS_LOG(@"The settings: ");
     CLS_LOG(@"%@", settings);
-    [self loadHeaderView];
     
     [self drawSideMenu];
     
-    [self loadOptions];
+//    [self loadOptions];
     
     [self getUser];
     
-    [self.view bringSubviewToFront:imagesScrollView];
+//    [self.view bringSubviewToFront:imagesScrollView];
     // Do any additional setup after loading the view.
 }
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -113,14 +129,32 @@
         
         [vc.view setBackgroundColor:[UIColor blackColor]];
         
-        vc.imageURL = settings.selectedImageUrl;
+        vc.imageURL = [NSURL URLWithString:settings.selectedImageUrl];
         vc.imageId = settings.selectedImageId;
         
         settings.selectedImageId = nil;
         
         [self presentViewController:vc animated:NO completion:nil];
+        
+        [imagesColView updateHeader];
     } else {
-        [self downloadImages];
+        if(!loaded) {
+            
+            imagesColView = [[DashboardCollection alloc] init];
+            
+            [self.view addSubview:imagesColView];
+            
+            [imagesColView fillSuperview];
+            
+            imagesColView.dashboardDelegate = self;
+            imagesColView.extensionUrl = @"get_user_tags";
+            imagesColView.chosenLink = 1;
+            [imagesColView setupView];
+            [imagesColView updateUI];
+            [self updateCollection];
+            loaded = true;
+        }
+//        [self downloadImages];
     }
     
 //    [self drawView];
@@ -133,21 +167,21 @@
     [backImage fillSuperview];
     
     [backImage showRealTimeBlurWithBlurStyle:XHBlurStyleBlackTranslucent];
-    
-    headerView = [[UIView alloc]init];
-    [oneBigView addSubview:headerView];
-    [headerView anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:250];
-    
-    UIButton *menuButton = [[UIButton alloc] init];
-    //    [menuButton setTitle:@"Menu" forState:UIControlStateNormal];
-    
-    [menuButton setImage:[UIImage imageNamed:@"Settings-32"] forState:UIControlStateNormal];
-    
-    //    [headerView addSubview:menuButton];
-    
-    [menuButton anchorTopRightWithRightPadding:5 topPadding:20 width:32 height:32];
-    
-    [menuButton addTarget:self action:@selector(openSideMenu) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    headerView = [[UIView alloc]init];
+//    [oneBigView addSubview:headerView];
+//    [headerView anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:250];
+//    
+//    UIButton *menuButton = [[UIButton alloc] init];
+//    //    [menuButton setTitle:@"Menu" forState:UIControlStateNormal];
+//    
+//    [menuButton setImage:[UIImage imageNamed:@"Settings-32"] forState:UIControlStateNormal];
+//    
+//    //    [headerView addSubview:menuButton];
+//    
+//    [menuButton anchorTopRightWithRightPadding:5 topPadding:20 width:32 height:32];
+//    
+//    [menuButton addTarget:self action:@selector(openSideMenu) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void) drawSideMenu {
@@ -358,53 +392,110 @@
     
 }
 
--(void) swapptapped:(UITapGestureRecognizer *)sender {
-    UIView *theSuperview = self.view; // whatever view contains your image views
-    CGPoint touchPointInSuperview = [sender locationInView:theSuperview];
-    UIView *touchedView = [theSuperview hitTest:touchPointInSuperview withEvent:nil];
-    NSLog(@"%ld",(long)touchedView.tag);
-    
+- (void)swappTapped:(int)tag {
+    NSLog(@"chosen tag is: %d", tag);
+
     NSString *url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_author_images";
+    
+    NSString *url2 = @"get_author_images";
+    int chosenLink = 2;
     scrollHeader.text = @"Sent Swapps";
     taggedUsers = true;
-    if (touchedView.tag == 1) {
+    if (tag == 1) {
         scrollHeader.text = @"Received Swapps";
         url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_user_tags";
+        url2 = @"get_user_tags";
+        chosenLink = 1;
         taggedUsers = false;
     }
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"fb_id": settings.current_user.userId};
-    [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        //
-        if([[responseObject objectForKey:@"message"] isKindOfClass:[NSArray class]]) {
-            NSArray *arr = [responseObject objectForKey:@"message"];
-            
-            fetchedImages = [arr copy];
-            
-            settings.ownImages = arr;
-            if (touchedView.tag == 1) {
-                ResTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
-            }
-            if (touchedView.tag == 2) {
-                SentTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
-            }
-            BOOL author = YES;
-            if( touchedView.tag == 1) {
-                author = NO;
-            }
-            [self drawView: author];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+    [imagesColView removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] removeObserver: imagesColView];
+    imagesColView = nil;
     
-    //  if([touchedView isKindOfClass:[UIImageView class]])
-    //  {
-    //    // hooray, it's one of your image views! do something with it.
-    //  }
+    imagesColView = [[DashboardCollection alloc] init];
+    
+    [self.view addSubview:imagesColView];
+    
+    [imagesColView fillSuperview];
+//    [imagesColView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+    
+    imagesColView.dashboardDelegate = self;
+    imagesColView.extensionUrl = url2;
+    imagesColView.chosenLink = chosenLink;
+    [imagesColView setupView];
+    [imagesColView updateUI];
+    
+    [self updateCollection];
 }
+
+//-(void) swapptapped:(UITapGestureRecognizer *)sender {
+//    UIView *theSuperview = imagesColView; // whatever view contains your image views
+//    CGPoint touchPointInSuperview = [sender locationInView:theSuperview];
+//    UIView *touchedView = [theSuperview hitTest:touchPointInSuperview withEvent:nil];
+//    NSLog(@"%ld",(long)touchedView.tag);
+//    
+//    NSString *url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_author_images";
+//    
+//    NSString *url2 = @"get_author_images";
+//    scrollHeader.text = @"Sent Swapps";
+//    taggedUsers = true;
+//    if (touchedView.tag == 1) {
+//        scrollHeader.text = @"Received Swapps";
+//        url = @"http://alti.xn----8sbarabrujldb2bdye.eu/get_user_tags";
+//        url2 = @"get_user_tags";
+//        taggedUsers = false;
+//    }
+//    
+//    imagesColView = [[DashboardCollection alloc] init];
+//    
+//    [self.view addSubview:imagesColView];
+//    
+//    [imagesColView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+//    
+//    imagesColView.dashboardDelegate = self;
+//    imagesColView.extensionUrl = url2;
+//    [imagesColView setupView];
+//    [imagesColView updateUI];
+//    
+//    [self updateCollection];
+////    imagesColView.extensionUrl = url2;
+////    [imagesColView updateUI];
+////    
+//
+//    
+//    //    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+////    NSDictionary *parameters = @{@"fb_id": settings.current_user.userId};
+////    [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+////        NSLog(@"JSON: %@", responseObject);
+////        //
+////        if([[responseObject objectForKey:@"message"] isKindOfClass:[NSArray class]]) {
+////            NSArray *arr = [responseObject objectForKey:@"message"];
+////            
+////            fetchedImages = [arr copy];
+////            
+////            settings.ownImages = arr;
+////            if (touchedView.tag == 1) {
+////                ResTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
+////            }
+////            if (touchedView.tag == 2) {
+////                SentTags.text = [NSString stringWithFormat:@"%lu",(unsigned long)fetchedImages.count];
+////            }
+////            BOOL author = YES;
+////            if( touchedView.tag == 1) {
+////                author = NO;
+////            }
+////            [self drawView: author];
+////        }
+////    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+////        NSLog(@"Error: %@", error);
+////    }];
+//    
+//    //  if([touchedView isKindOfClass:[UIImageView class]])
+//    //  {
+//    //    // hooray, it's one of your image views! do something with it.
+//    //  }
+//}
 
 - (void) drawView:(BOOL) author {
     int y = 0;
@@ -412,91 +503,100 @@
     
     [imagesColView removeFromSuperview];
     
-    imagesColView = [[UIView alloc] init];
+    [[NSNotificationCenter defaultCenter] removeObserver: imagesColView];
+    imagesColView = nil;
     
-    [oneBigView addSubview:imagesColView];
+    imagesColView = [[DashboardCollection alloc] init];
+    imagesColView.dashboardDelegate = self;
+    [self.view addSubview:imagesColView];
+//    imagesColView.extensionUrl = @"get_user_tags";
+//    [oneBigView addSubview:imagesColView];
+    [imagesColView fillSuperview];
+//    [imagesColView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+    [imagesColView setupView];
+    [imagesColView updateUI];
     
-    [imagesColView alignUnder:scrollHeader centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+    [self updateCollection];
     //    imagesView = [[UIView alloc] init];
     //    [imagesScrollView addSubview:imagesView];
     
-    
-    double lastY = 0;
-    int imWidth = (self.view.width - (maxPerLine+1)*2)/maxPerLine;
-    
-    for(NSDictionary *imag in fetchedImages) {
-        //[imageV setImage:image];
-        
-        lastY = 5+imWidth*y+ maxPerLine*y+imWidth;
-        
-        BoardTag *tagViewButton = [[BoardTag alloc]init];
-        tagViewButton.swappId = imag[@"s_swapp_tag_id"];
-        if ([imag[@"s_can_see"]  isEqual: @"1"] || author) {
-            
-            tagViewButton.canSee = true;
-        } else {
-            tagViewButton.canSee = false;
-        }
-        [imagesColView addSubview:tagViewButton];
-        tagViewButton.layer.borderWidth = 1;
-        tagViewButton.clipsToBounds = YES;
-        [tagViewButton setFrame:CGRectMake(2 + 2*br + imWidth*br, 10+imWidth*y+ maxPerLine*y, imWidth, imWidth)];
-        tagViewButton.full = NO;
-        tagViewButton.fr = tagViewButton.frame;
-        
-        longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressTap:)];
-        [tagViewButton addGestureRecognizer:longPress];
-        
-        [tagViewButton addTarget:self action:@selector(tagPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        br++;
-        if(br == maxPerLine) {
-            br = 0;
-            y++;
-        }
-        
-        //ALAsset* asset = settings.images[shownpic];
-        NSURL *aURL =  [NSURL URLWithString:[NSString stringWithFormat:@"http://alti.xn----8sbarabrujldb2bdye.eu/uploads/%@",imag[@"s_image_source"]]];
-        
-        tagViewButton.swappUrl = aURL;
-        
-        if(tagViewButton.canSee || taggedUsers) {
-            [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
-        } else {
-            [tagViewButton setImage:[UIImage imageNamed:@"Lock Filled-500"] forState:UIControlStateNormal];
-        }
-        [tagViewButton.imageView setContentMode:UIViewContentModeScaleToFill];
-        
-        //        //NSURL* aURL = [NSURL URLWithString:settings.images[shownpic]];
-        //        library = [[ALAssetsLibrary alloc] init];
-        //        [library assetForURL:aURL resultBlock:^(ALAsset *asset)
-        //         {
-        //             UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1 orientation:UIImageOrientationUp];
-        //             //         UIImageView *image = [[UIImageView alloc] initWithImage:copyOfOriginalImage];
-        //             //
-        //             [tagViewButton setImage:copyOfOriginalImage forState:UIControlStateNormal];
-        //             //[imageView addSubview:image];
-        //             //[image fillSuperview];
-        //         }
-        //                failureBlock:^(NSError *error)
-        //         {
-        //             // error handling
-        //             NSLog(@"failure-----");
-        //         }];
-        
-    }
-    
-    //    [imagesView anchorTopLeftWithLeftPadding:0 topPadding:0 width:self.view.width height:lastY];
-    imagesColView.frame = CGRectMake(imagesColView.xMin, imagesColView.yMin, self.view.width, lastY);
-    oneBigView.frame = CGRectMake(0, 0, self.view.width, imagesColView.yMax);
-    imagesScrollView.contentSize = CGSizeMake(self.view.width, oneBigView.yMax);
-    [backgrVi alignUnder:headerView centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
-
-    //    imagesScrollView.contentSize = imagesView.frame.size;
-    
-    [self.view bringSubviewToFront:add];
-    
-    [self.view bringSubviewToFront:sideMenu];
+//    
+//    double lastY = 0;
+//    int imWidth = (self.view.width - (maxPerLine+1)*2)/maxPerLine;
+//    
+//    for(NSDictionary *imag in fetchedImages) {
+//        //[imageV setImage:image];
+//        
+//        lastY = 5+imWidth*y+ maxPerLine*y+imWidth;
+//        
+//        BoardTag *tagViewButton = [[BoardTag alloc]init];
+//        tagViewButton.swappId = imag[@"s_swapp_tag_id"];
+//        if ([imag[@"s_can_see"]  isEqual: @"1"] || author) {
+//            
+//            tagViewButton.canSee = true;
+//        } else {
+//            tagViewButton.canSee = false;
+//        }
+//        [imagesColView addSubview:tagViewButton];
+//        tagViewButton.layer.borderWidth = 1;
+//        tagViewButton.clipsToBounds = YES;
+//        [tagViewButton setFrame:CGRectMake(2 + 2*br + imWidth*br, 10+imWidth*y+ maxPerLine*y, imWidth, imWidth)];
+//        tagViewButton.full = NO;
+//        tagViewButton.fr = tagViewButton.frame;
+//        
+//        longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressTap:)];
+//        [tagViewButton addGestureRecognizer:longPress];
+//        
+//        [tagViewButton addTarget:self action:@selector(tagPressed:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        br++;
+//        if(br == maxPerLine) {
+//            br = 0;
+//            y++;
+//        }
+//        
+//        //ALAsset* asset = settings.images[shownpic];
+//        NSURL *aURL =  [NSURL URLWithString:[NSString stringWithFormat:@"http://alti.xn----8sbarabrujldb2bdye.eu/uploads/%@",imag[@"s_image_source"]]];
+//        
+//        tagViewButton.swappUrl = aURL;
+//        
+//        if(tagViewButton.canSee || taggedUsers) {
+//            [tagViewButton setImageForState:UIControlStateNormal withURL:aURL];
+//        } else {
+//            [tagViewButton setImage:[UIImage imageNamed:@"Lock Filled-500"] forState:UIControlStateNormal];
+//        }
+//        [tagViewButton.imageView setContentMode:UIViewContentModeScaleToFill];
+//        
+//        //        //NSURL* aURL = [NSURL URLWithString:settings.images[shownpic]];
+//        //        library = [[ALAssetsLibrary alloc] init];
+//        //        [library assetForURL:aURL resultBlock:^(ALAsset *asset)
+//        //         {
+//        //             UIImage  *copyOfOriginalImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1 orientation:UIImageOrientationUp];
+//        //             //         UIImageView *image = [[UIImageView alloc] initWithImage:copyOfOriginalImage];
+//        //             //
+//        //             [tagViewButton setImage:copyOfOriginalImage forState:UIControlStateNormal];
+//        //             //[imageView addSubview:image];
+//        //             //[image fillSuperview];
+//        //         }
+//        //                failureBlock:^(NSError *error)
+//        //         {
+//        //             // error handling
+//        //             NSLog(@"failure-----");
+//        //         }];
+//        
+//    }
+//    
+//    //    [imagesView anchorTopLeftWithLeftPadding:0 topPadding:0 width:self.view.width height:lastY];
+//    imagesColView.frame = CGRectMake(imagesColView.xMin, imagesColView.yMin, self.view.width, lastY);
+//    oneBigView.frame = CGRectMake(0, 0, self.view.width, imagesColView.yMax);
+//    imagesScrollView.contentSize = CGSizeMake(self.view.width, oneBigView.yMax);
+//    [backgrVi alignUnder:headerView centeredFillingWidthAndHeightWithLeftAndRightPadding:0 topAndBottomPadding:0];
+//
+//    //    imagesScrollView.contentSize = imagesView.frame.size;
+//    
+//    [self.view bringSubviewToFront:add];
+//    
+//    [self.view bringSubviewToFront:sideMenu];
 }
 
 -(void)longPressTap:(id)sender
@@ -575,20 +675,44 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"fb_id": settings.current_user.userId};
     [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/get_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+//        NSLog(@"JSON: %@", responseObject);
+        if(responseObject[@"message"] != nil) {
         
-        NSDictionary *dic = responseObject[@"message"];
-        
-        SentTags.text = [NSString stringWithFormat:@"%@",dic[@"u_tags_made"]];
-        ResTags.text = [NSString stringWithFormat:@"%@", dic[@"tagged_in_count"]];
-        
+            NSDictionary *dic = responseObject[@"message"];
+            
+            swCount = [NSString stringWithFormat:@"%@",dic[@"u_tags_made"]];
+            swTags = [NSString stringWithFormat:@"%@", dic[@"tagged_in_count"]];
+            settings.recSwCount = swCount;
+            settings.sentSwCount = swTags;
+            [self updateCollection];
+            
+            SentTags.text = swCount;
+            ResTags.text =  swTags;
+            
+        } else {
+//            NSDictionary *dic = responseObject[@"message"];
+            
+            swCount = @"0";
+            swTags = @"0";
+            [self updateCollection];
+            
+            SentTags.text = swCount;
+            ResTags.text =  swTags;
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
     
 }
 
+- (void) updateCollection {
+    imagesColView.swCount = swCount;
+    imagesColView.swTag = swTags;
+    [imagesColView updateHeader];
+}
+
 - (void) downloadImages {
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"fb_id": settings.current_user.userId};
     [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/get_user_tags" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -745,6 +869,28 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
+}
+
+- (void)chosenTag:(SwappInfo *)info image:(UIImage *)image {
+    if(!info.canSee) {
+        isUnclogking = true;
+        unlockingId = [NSString stringWithFormat:@"%ld",(long)info.id];
+        settings.selectedImageUrl = info.url;
+        settings.selectedImageId = [NSString stringWithFormat:@"%ld",(long)info.id];
+        [self getAllPictures];
+        
+    } else {
+        TagViewController *vc = [TagViewController new];
+        
+        [vc.view setBackgroundColor:[UIColor blackColor]];
+        
+        vc.image = image;
+        vc.imageURL = [NSURL URLWithString:info.url];
+        vc.imageId = [NSString stringWithFormat:@"%ld",(long)info.id];
+        
+        [self presentViewController:vc animated:YES completion:nil];
+        
+    }
 }
 
 

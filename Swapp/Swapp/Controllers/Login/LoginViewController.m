@@ -177,7 +177,7 @@
     
     
     
-        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture,friends.limit(5000){name,id,picture},taggable_friends.limit(5000){name,id,picture}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,name,picture.width(100).height(100),friends.limit(5000){name,id,picture.width(100).height(100)},taggable_friends.limit(5000){name,id,picture.width(100).height(100)}"}] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
             [CrashlyticsKit setObjectValue:@"request delivered" forKey:@"debugData"];
             [CrashlyticsKit setObjectValue:error forKey:@"error"];
     
@@ -229,35 +229,16 @@
                         [allCloseFriends addObject:user];
                     }
                 }
-    
-                CLS_LOG(@"all close friends: ");
-                CLS_LOG(@"%@", allCloseFriends);
-    
-                [CrashlyticsKit setObjectValue:@"m_friends ready" forKey:@"debugData"];
-    
-    
-                [CrashlyticsKit setObjectValue:allCloseFriends forKey:@"allCloseFriends"];
-    
-                set.closefriends = allCloseFriends;
-                [CrashlyticsKit setObjectValue:@"set all close friends" forKey:@"debugData"];
-    
+       set.closefriends = allCloseFriends;
+             
                 AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
                 NSDictionary *parameters = @{@"facebook_id": dic[@"userId"],
                                              @"name": dic[@"name"],
                                              @"profile_image": dic[@"imageUrl"]};
     
-                [CrashlyticsKit setObjectValue:@"request for create fb user" forKey:@"debugData"];
-    
-                CLS_LOG(@"parameters: ");
-                CLS_LOG(@"%@", parameters);
     
                 [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/create_facebook_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSLog(@"JSON: %@", responseObject);
-                    CLS_LOG(@"JSON results: ");
-                    CLS_LOG(@"%@", responseObject);
-                    [CrashlyticsKit setObjectValue:@"fb user request delivered" forKey:@"debugData"];
-    
-                    [CrashlyticsKit setObjectValue:responseObject forKey:@"fbData"];
     
                     if([[NSString stringWithFormat:@"%@", responseObject[@"success"]]  isEqual: @"0"]) {
                         set.current_user.newReg = false;
@@ -271,19 +252,11 @@
                     NSLog(@"Error: %@", error);
                 }];
     
-                [CrashlyticsKit setObjectValue:@"set taggable_friends" forKey:@"debugData"];
                 if (result[@"taggable_friends"][@"data"] != nil) {
                     m_taggable_friends = result[@"taggable_friends"][@"data"];
                 }
                 
-                CLS_LOG(@"all m_taggable_friends: ");
-                CLS_LOG(@"%@", m_taggable_friends);
-    
-                [CrashlyticsKit setObjectValue:m_taggable_friends forKey:@"m_taggable_friends"];
-    
                 HUD.labelText = @"Fetching Friends ...";
-    
-                [CrashlyticsKit setObjectValue:@"leaving the group" forKey:@"debugData"];
     
             } else {
             }

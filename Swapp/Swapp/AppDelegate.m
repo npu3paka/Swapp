@@ -14,6 +14,8 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "Swapps-Swift.h"
+#import "Settings.h"
 
 @interface AppDelegate () <CrashlyticsDelegate>
 
@@ -28,7 +30,15 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     [FBSDKLoginButton class];
     CrashlyticsKit.delegate = self;
     [Fabric with:@[[Crashlytics class]]];
-
+    
+    Settings *settings = [Settings sharedInstance];
+    settings.photos = [[NSMutableOrderedSet alloc] init];
+    
+    [SKCache loadCache];
+//    KSettings.setExpireDate(.EveryWeek)
+//    SKCache.loadCache()
+    
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     

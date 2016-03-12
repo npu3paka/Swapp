@@ -18,11 +18,23 @@
 @property (nonatomic, assign) NSArray *friends;
 @property (nonatomic, assign) NSArray *closefriends;
 @property (nonatomic, assign) NSArray *images;
+
+
+@property (nonatomic, strong) NSMutableOrderedSet *photos;
+
+@property (nonatomic, assign) NSArray *dwImages;
+
 //@property (nonatomic, assign) NSDictionary *dicImages;
 @property (nonatomic, assign) NSArray *ownImages;
 
 @property (nonatomic, strong) NSString *selectedImageId;
-@property (nonatomic, assign) NSURL *selectedImageUrl;
+@property (nonatomic, strong) NSString *selectedImageUrl;
+
+
+@property (nonatomic, strong) NSString *recSwCount;
+@property (nonatomic, strong) NSString *sentSwCount;
+
+
 
 
 - (void) addNewImages:(PHFetchResult *) imagList;
