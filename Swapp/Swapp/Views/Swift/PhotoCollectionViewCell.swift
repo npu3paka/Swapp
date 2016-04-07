@@ -38,6 +38,7 @@ class BMActivityIndicator: UIActivityIndicatorView {
 
 class PhotoCollectionViewCell: UICollectionViewCell {
     
+    
     internal var activityIndicator: UIActivityIndicatorView?
     
     var imageView: UIImageView! {
@@ -115,6 +116,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        imageView.alpha = 0
 //        imageView.image = nil
 //        activityIndicator?.startAnimating()
 //        activityIndicator?.setNeedsLayout()
@@ -245,7 +247,7 @@ class PhotoCollectionHeader: UICollectionReusableView {
         ResTags!.text = (settings!.recSwCount != nil) ? settings!.recSwCount : "0"
         ResTags!.tag = 1
         ResTags!.userInteractionEnabled = true
-        ResTags!.addGestureRecognizer(tapGesture1)
+//        ResTags!.addGestureRecognizer(tapGesture1)
         
         leftBox.addSubview(ResTags!)
         
@@ -270,7 +272,7 @@ class PhotoCollectionHeader: UICollectionReusableView {
         SentTags!.text = (settings!.sentSwCount != nil) ? settings!.recSwCount : "0"
         SentTags!.tag = 2
         SentTags!.userInteractionEnabled = true
-        SentTags!.addGestureRecognizer(tapGesture)
+//        SentTags!.addGestureRecognizer(tapGesture)
         
         rightBox.addSubview(SentTags!)
         

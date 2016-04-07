@@ -29,7 +29,7 @@
 
 @property (nonatomic, strong) NSString *selectedImageId;
 @property (nonatomic, strong) NSString *selectedImageUrl;
-
+@property (nonatomic, assign) int selectedIndexPath;
 
 @property (nonatomic, strong) NSString *recSwCount;
 @property (nonatomic, strong) NSString *sentSwCount;

@@ -11,6 +11,7 @@
 #include <AssetsLibrary/AssetsLibrary.h>
 #import "AFNetworking.h"
 #import "UIKit+AFNetworking.h"
+#import "Settings.h"
 
 @interface TagViewController () <UIActionSheetDelegate>
 
@@ -123,6 +124,8 @@
 }
 
 - (void) goBack {
+    Settings *settings = [Settings sharedInstance];
+    settings.selectedIndexPath = - 1;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -164,8 +167,9 @@
     
     [manager POST:@"http://alti.xn----8sbarabrujldb2bdye.eu/backend_dev.php/delete_swapp" parameters:@{ @"swapp_tag_id" :self.imageId } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        
-        [self goBack];
+        Settings *settings = [Settings sharedInstance];
+        [settings.photos removeObjectAtIndex:self.selectedIndexPath];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

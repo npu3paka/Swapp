@@ -167,6 +167,7 @@ static int imageWidth = 40;
 
 - (void) backToMain {
     settings.selectedImageId = nil;
+    settings.selectedIndexPath = -1;
     [self performSegueWithIdentifier:@"showDashboard" sender:nil];
 }
 

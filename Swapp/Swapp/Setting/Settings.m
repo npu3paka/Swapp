@@ -32,6 +32,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         settings = [[Settings alloc] init];
+        settings.selectedIndexPath = -1;
     });
     return settings;
 }

@@ -13,4 +13,6 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, strong) NSString *imageId;
+@property (nonatomic, assign) int selectedIndexPath;
+
 @end

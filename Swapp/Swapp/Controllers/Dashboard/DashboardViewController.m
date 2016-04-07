@@ -133,10 +133,11 @@
         vc.imageId = settings.selectedImageId;
         
         settings.selectedImageId = nil;
+        ((SwappInfo *)settings.photos[settings.selectedIndexPath]).canSee = YES;
         
         [self presentViewController:vc animated:NO completion:nil];
         
-        [imagesColView updateHeader];
+        [self updateCollection];
     } else {
         if(!loaded) {
             
@@ -150,9 +151,13 @@
             imagesColView.extensionUrl = @"get_user_tags";
             imagesColView.chosenLink = 1;
             [imagesColView setupView];
-            [imagesColView updateUI];
+            if ( settings.photos.count == 0) {
+                [imagesColView updateUI];
+            }
             [self updateCollection];
             loaded = true;
+        } else {
+            [self updateCollection];
         }
 //        [self downloadImages];
     }
@@ -423,6 +428,27 @@
     imagesColView.dashboardDelegate = self;
     imagesColView.extensionUrl = url2;
     imagesColView.chosenLink = chosenLink;
+    
+    NSMutableArray *arrayWithIndexPathsDelete = [NSMutableArray array];
+    int itemCount = [settings.photos count];
+    
+    for (int d = 0; d<itemCount; d++) {
+        [arrayWithIndexPathsDelete addObject:[NSIndexPath indexPathForRow:d inSection:0]];
+    }
+    
+    [imagesColView.collectionView deleteItemsAtIndexPaths:arrayWithIndexPathsDelete];
+//
+//    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+//    for (NSIndexPath *itemPath  in arrayWithIndexPathsDelete) {
+//        [indexSet addIndex:itemPath.row];
+//    }
+//    [self.apps removeObjectsAtIndexes:indexSet];
+    
+    
+    // Delete the items from the data source.
+//    let indexPath = NSIndexPath(forItem: Int(settings.selectedIndexPath), inSection: 0)
+//    collectionView!.deleteItemsAtIndexPaths([indexPath])
+    
     [imagesColView setupView];
     [imagesColView updateUI];
     
@@ -871,12 +897,14 @@
     
 }
 
-- (void)chosenTag:(SwappInfo *)info image:(UIImage *)image {
+- (void)chosenTag:(SwappInfo *)info image:(UIImage *)image atIndexPath:(int)atIndexPath {
     if(!info.canSee) {
         isUnclogking = true;
         unlockingId = [NSString stringWithFormat:@"%ld",(long)info.id];
         settings.selectedImageUrl = info.url;
         settings.selectedImageId = [NSString stringWithFormat:@"%ld",(long)info.id];
+        settings.selectedIndexPath = atIndexPath;
+
         [self getAllPictures];
         
     } else {
@@ -887,6 +915,8 @@
         vc.image = image;
         vc.imageURL = [NSURL URLWithString:info.url];
         vc.imageId = [NSString stringWithFormat:@"%ld",(long)info.id];
+        vc.selectedIndexPath = atIndexPath;
+        settings.selectedIndexPath = atIndexPath;
         
         [self presentViewController:vc animated:YES completion:nil];
         

@@ -11,11 +11,25 @@ import Alamofire
 import Haneke
 
 @objc protocol DashboardColDelegate {
-    func chosenTag(info: SwappInfo, image: UIImage)
+    func chosenTag(info: SwappInfo, image: UIImage, atIndexPath: Int)
     func openTagView()
     func swappTapped(sender: Int)
 }
 
+extension UIImage {
+    func correctlyOrientedImage() -> UIImage {
+        if self.imageOrientation == UIImageOrientation.Up {
+            return self
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        self.drawInRect(CGRectMake(0, 0, self.size.width, self.size.height))
+        let normalizedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return normalizedImage;
+    }
+}
 
 class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -30,7 +44,7 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
     var swCount = "0"
     var swTag = "0"
     
-    var photos = NSMutableOrderedSet()
+//    var photos = NSMutableOrderedSet()
     var refreshControl = UIRefreshControl()
     
     var populatingPhotos = false
@@ -45,7 +59,7 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
     let PhotoHeaderViewIdentifier = "PhotoCollectionHeader"
     
     var collectionView: UICollectionView?
-    var settings: Settings?
+    lazy var settings = Settings.sharedInstance()
     
     private var noImages = false
     /// ImageDownloader manager instance
@@ -81,14 +95,15 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
     override func setupUI() {
         super.setupUI()
         
-        settings = Settings.sharedInstance()
+        self.backgroundColor = .clearColor()
         
+//        settings = Settings.sharedInstance()
+//        settings.photos = NSMutableOrderedSet()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNotificationSentLabel", name: Notifications.AddTag, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateRec", name: Notifications.RecSw, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateSent", name: Notifications.SentSw, object: nil)
         
-        
-        
+
 //        setupView()
 //        populatePhotos()
         
@@ -120,7 +135,7 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
         let indexSet = NSIndexSet(indexesInRange: NSMakeRange(0,0))
         collectionView!.deleteSections(indexSet)
         
-        self.photos.removeAllObjects()
+        settings!.photos.removeAllObjects()
         self.backgroundColor = .clearColor()
         populatePhotos()
     }
@@ -142,18 +157,18 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return settings.photos.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         var cell: PhotoCollectionViewCell?
         
-        let partCell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoCellIdentifier, forIndexPath: indexPath) as! PhotoCollectionViewCell
+        let partCell =  collectionView.dequeueReusableCellWithReuseIdentifier(PhotoCellIdentifier, forIndexPath: indexPath) as! PhotoCollectionViewCell
         
         cell = partCell
-        
-        let swapp = photos.objectAtIndex(indexPath.row) as! SwappInfo
+        cell!.tag = indexPath.row
+        let swapp = settings.photos.objectAtIndex(indexPath.row) as! SwappInfo
 
         
         
@@ -173,16 +188,21 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
 //            
             imageDownloader.getImage(imageURL: imageURL, forIndexPath: indexPath, completion: { (image) -> () in
                 if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) as? PhotoCollectionViewCell {
-                    cellToUpdate.activityIndicator?.stopAnimating()
-                    cellToUpdate.imageView.image = image!
-//                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
-//                    self.collectionView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-//                    cellToUpdate.addImage(image!)
-                    //                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-                    UIView.animateWithDuration(0.5, animations: { () -> Void in
-                        
-                        cellToUpdate.imageView.alpha = 1
-                    })
+                    if (image != nil) {
+                        if cellToUpdate.tag == indexPath.row {
+                            cellToUpdate.activityIndicator?.stopAnimating()
+                            cellToUpdate.imageView.image = image!.correctlyOrientedImage()
+                            //                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                            //                    self.collectionView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+                            //                    cellToUpdate.addImage(image!)
+                            //                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+                            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                                
+                                cellToUpdate.imageView.alpha = 1
+                            })
+                        }
+                    }
+                    
                 }
             })
             
@@ -200,24 +220,24 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
             
 //            cell.imageView.hnk_setImageFromURL(NSURL(string: imageURL)!)
             
-            Alamofire.request(.GET, imageURL).response() {
-                (_, _, data, _) in
-                if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) as? PhotoCollectionViewCell {
-                    cellToUpdate.activityIndicator?.stopAnimating()
-                    cellToUpdate.imageView.image = UIImage(data: data!)
-                    //                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
-                    //                    self.collectionView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-                    //                    cellToUpdate.addImage(image!)
-                    //                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-                    UIView.animateWithDuration(0.5, animations: { () -> Void in
-                        
-                        cellToUpdate.imageView.alpha = 1
-                    })
-                }
+//            Alamofire.request(.GET, imageURL).response() {
+//                (_, _, data, _) in
+//                if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) as? PhotoCollectionViewCell {
+//                    cellToUpdate.activityIndicator?.stopAnimating()
+//                    cellToUpdate.imageView.image = UIImage(data: data!)
+//                    //                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+//                    //                    self.collectionView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+//                    //                    cellToUpdate.addImage(image!)
+//                    //                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+//                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+//                        
+//                        cellToUpdate.imageView.alpha = 1
+//                    })
+//                }
 //                let image = UIImage(data: data!)
 //                cell.addImage(image!)
 //                cell.imageView.image = image
-            }
+//            }
         } else {
             let image = UIImage(named: "Lock Filled-500")
             cell!.activityIndicator?.stopAnimating()
@@ -259,21 +279,42 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
     }
     
      func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let chosen = self.photos.objectAtIndex(indexPath.item) as! SwappInfo
+        let chosen = settings!.photos.objectAtIndex(indexPath.item) as! SwappInfo
        
         let cell : PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath)! as! PhotoCollectionViewCell
         
         if cell.imageView.image != nil {
-            dashboardDelegate!.chosenTag(chosen, image:cell.imageView.image!)
+            dashboardDelegate!.chosenTag(chosen, image:cell.imageView.image!, atIndexPath: indexPath.row)
         }
 //        [self presentViewController:vc animated:YES completion:nil];
         
-//                performSegueWithIdentifier("ShowPhoto", sender: (self.photos.objectAtIndex(indexPath.item) as! PhotoInfo).id)
+//                performSegueWithIdentifier("ShowPhoto", sender: (settings!.photos.objectAtIndex(indexPath.item) as! PhotoInfo).id)
     }
     
     // MARK: Helper
     
     func updateHeader() {
+        
+        if settings.selectedIndexPath != -1 {
+//            let paths = [NSIndexPath(index: Int(settings.selectedIndexPath))]
+            let indexPath = NSIndexPath(forItem: Int(settings.selectedIndexPath), inSection: 0)
+            collectionView!.deleteItemsAtIndexPaths([indexPath])
+//            collectionView?.deleteItemsAtIndexPaths(paths)
+            
+//            collectionView?.performBatchUpdates({
+//                self.collectionView?.deleteItemsAtIndexPaths(NSArray(object: NSIndexPath(index: Int(self.settings.selectedIndexPath))) as! [NSIndexPath])
+//                
+//                }, completion: nil)
+//            
+//            collectionView
+//            let indexSet = NSIndexSet(indexesInRange: NSMakeRange(0,0))
+//            if collectionView != nil {
+//                collectionView?.deleteSections(indexSet)
+//            }
+            self.settings.selectedIndexPath = -1
+                
+        }
+        
         collectionView?.reloadData()
     }
     
@@ -302,7 +343,6 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
         refreshControl.tintColor = .whiteColor()
         refreshControl.addTarget(self, action: "handleRefresh", forControlEvents: .ValueChanged)
         collectionView!.addSubview(refreshControl)
-        
     }
     
     func handleRefresh() {
@@ -371,16 +411,19 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
 //                    let photoInfos = message.map { SwappInfo(id: ($0["s_swapp_tag_id"] != nil) ? Int(($0["s_swapp_tag_id"] as? String)!)! : 0, url:"http://alti.xn----8sbarabrujldb2bdye.eu/uploads/\($0["s_image_source"]!)", canSee:($0["s_can_see"]) ($0["s_can_see"]!.isEqual("1") || author) ? true : false) }
 //                    
                     // 8
-                    let lastItem = self.photos.count
+                    let lastItem = self.settings!.photos.count
                     // 9
-                    self.photos.addObjectsFromArray(photoInfos)
-                    print("photos count: \(self.photos.count)")
+                    self.settings!.photos.addObjectsFromArray(photoInfos)
+                    print("photos count: \(self.settings!.photos.count)")
                     // 10
-                    let indexPaths = (lastItem..<self.photos.count).map { NSIndexPath(forItem: $0, inSection: 0) }
+                    let indexPaths = (lastItem..<self.settings!.photos.count).map { NSIndexPath(forItem: $0, inSection: 0) }
                     
                     // 11
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.collectionView!.insertItemsAtIndexPaths(indexPaths)
+                        self.collectionView!.reloadData()
+//                        if self.collectionView != nil {
+//                            self.collectionView!.insertItemsAtIndexPaths(indexPaths)
+//                        }
                     }
                     
                     self.currentPage++
@@ -406,4 +449,6 @@ class DashboardCollection: BaseView, UICollectionViewDataSource, UICollectionVie
             self.populatingPhotos = false
         }
     }
+    
+    
 }

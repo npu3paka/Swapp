@@ -36,7 +36,7 @@
 }
 
 - (NSString *)name
-{
+{
     return name;
 }
 
